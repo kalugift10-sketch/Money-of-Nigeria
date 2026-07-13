@@ -1,0 +1,1629 @@
+{
+  "meta": {
+    "title": "The Money of Nigeria — Currency Directory",
+    "description": "Every medium of exchange spent in Nigeria, pre-colonial to present, modeled as catalog items. Each item carries a change-by-change changelog. The year/timeline view is derived by flattening all changelog entries and sorting by date.",
+    "version": "0.4.0",
+    "generated": "2026-07-13",
+    "schema_notes": {
+      "category": "one of: commodity | shell | metal-object | coin-series | banknote | proposed | digital | currency-system",
+      "status": "one of: active | withdrawn | demonetized | never-issued | dormant",
+      "changelog[].date": "ISO date where the day is documented; year-only strings (e.g. '1984-04') where only month/year is documented",
+      "verification": "entries marked 'conflicting-sources' or 'unverified' should be independently checked before publishing",
+      "image_hints": "suggested search phrases for sourcing photography; no image assets included"
+    },
+    "primary_sources": [
+      "https://www.cbn.gov.ng/currency/historycur.html",
+      "https://www.cbn.gov.ng/currency/gallery.html",
+      "https://en.wikipedia.org/wiki/Nigerian_naira",
+      "https://en.wikipedia.org/wiki/Nigerian_pound",
+      "https://en.wikipedia.org/wiki/Biafran_pound",
+      "https://en.wikipedia.org/wiki/Manilla_(money)"
+    ],
+    "source_policy": "Where sources disagree, the Central Bank of Nigeria (cbn.gov.ng) is treated as the authority and displayed by default. Alternate accounts (e.g. Wikipedia) are preserved in 'source_disagreement' objects so the UI can surface them as footnotes.",
+    "image_convention": {
+      "folder": "/images/<currency-slug>/",
+      "filename": "<year>-<short-label>.jpg (e.g. /images/ten-naira-note/1979-alvan-ikoku-front.jpg)",
+      "how_to_add": "1) Save the photo into the folder using the convention. 2) Add an object to that currency's 'images' array below. 3) If the photo belongs to a specific change, set change_ref to that change_no — the detail slide for that change will use it. Images with change_ref null are general/cover images (card + hero of the detail page).",
+      "fields": {
+        "src": "path to the file",
+        "alt": "plain description for accessibility",
+        "caption": "optional display caption",
+        "credit": "photographer or institution — required for museum/CBN images",
+        "change_ref": "change_no this image illustrates, or null for the cover image"
+      }
+    },
+    "eras": [
+      {
+        "id": "pre-colonial",
+        "label": "Pre-Colonial",
+        "period": "before 1880",
+        "blurb": "Barter, cowries and manillas — money before the colony."
+      },
+      {
+        "id": "colonial",
+        "label": "Colonial",
+        "period": "1880–1959",
+        "blurb": "British coinage and the West African Currency Board."
+      },
+      {
+        "id": "pound-era",
+        "label": "The Pound Era",
+        "period": "1959–1973",
+        "blurb": "The Nigerian pound — and Biafra's breakaway currency."
+      },
+      {
+        "id": "naira-era",
+        "label": "The Naira Era",
+        "period": "1973–present",
+        "blurb": "Decimalization to the 2022 redesign, including the notes that never happened."
+      },
+      {
+        "id": "digital",
+        "label": "Digital",
+        "period": "2021–present",
+        "blurb": "The eNaira experiment."
+      }
+    ],
+    "sorting": "Three sorts, one dataset: (1) by currency — the default catalog; (2) by year — flatten all changelog entries, sort by date; (3) by era — group currencies by era_group, ordered per meta.eras."
+  },
+  "currencies": [
+    {
+      "id": "barter",
+      "slug": "trade-by-barter",
+      "name": "Trade by Barter & Commodity Money",
+      "category": "commodity",
+      "era": "pre-colonial",
+      "issuer": "None (community-based exchange)",
+      "first_used": "pre-1700 (undocumented origin)",
+      "withdrawn": "gradual, displaced by cowries, manillas and coinage",
+      "status": "withdrawn",
+      "summary": "Before formal currency, exchange ran on direct barter and commodity money. Farm produce and livestock (goats, cows, sheep) served as currency across regions; in the north, salt, kolanuts and livestock were both consumed and used as money. Beads also circulated as a store of value.",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "pre-1700",
+          "title": "Barter as the default system",
+          "what_changed": "Goods exchanged directly; value determined by need and availability. Livestock, farm produce, salt, kolanuts and beads functioned as commodity money.",
+          "why": "No centralized currency issuer existed; communities developed their own value systems.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html",
+            "https://historicalnigeria.com/the-evolution-of-nigerian-currency/",
+            "https://www.pulse.ng/story/history-of-nigerian-currency-2025100114190906537"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "1700s-1800s",
+          "title": "Displacement by object currencies",
+          "what_changed": "Cowries and manillas became dominant general-purpose currencies, pushing pure barter to the margins.",
+          "why": "Object currencies were countable, portable and standardized enough for long-distance and market trade.",
+          "people": [],
+          "sources": [
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency"
+          ]
+        }
+      ],
+      "image_hints": [
+        "pre-colonial Nigeria market barter illustration",
+        "kolanut salt trade northern Nigeria historic"
+      ],
+      "images": [],
+      "era_group": "pre-colonial"
+    },
+    {
+      "id": "cowrie",
+      "slug": "cowries",
+      "name": "Cowrie Shells",
+      "category": "shell",
+      "era": "pre-colonial to early colonial",
+      "issuer": "None (imported shell money)",
+      "first_used": "one of the oldest known currencies in the region; in wide use by the 1700s",
+      "withdrawn": "use fizzled out by the 1920s",
+      "status": "withdrawn",
+      "summary": "One of Africa's oldest known forms of currency. Imported from the Indian Ocean via Portuguese and later British traders; durable, portable and attractive. Used extensively across Yoruba, Hausa and Igbo communities with a formal counting system.",
+      "counting_system": {
+        "string": "40 cowries",
+        "head": "50 strings (2,000 cowries)",
+        "bag": "10 heads (20,000 cowries)",
+        "source": "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency"
+      },
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "pre-1700s",
+          "title": "Adoption as general-purpose money",
+          "what_changed": "Cowries imported through Indian Ocean trade became the dominant market currency across Yoruba, Hausa and Igbo communities.",
+          "why": "Durable, portable, hard to counterfeit, and countable in standardized units (strings, heads, bags).",
+          "people": [],
+          "sources": [
+            "https://historicalnigeria.com/the-evolution-of-nigerian-currency/",
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "1865",
+          "title": "Documented exchange value in Lagos",
+          "what_changed": "One bag of 20,000 shells exchanged for one to two English pounds in Lagos.",
+          "why": "Growing British commercial presence created documented cowrie-to-sterling exchange rates.",
+          "people": [],
+          "sources": [
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency"
+          ]
+        },
+        {
+          "change_no": 3,
+          "date": "1880-1912",
+          "title": "Competition with British coinage",
+          "what_changed": "British shillings and pence were introduced as legal tender (1880 ordinance), but cowries remained a strong competitor to the new money.",
+          "why": "Popular trust in cowries persisted; coined money took decades to gain acceptance.",
+          "people": [],
+          "sources": [
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency"
+          ]
+        },
+        {
+          "change_no": 4,
+          "date": "1920s",
+          "title": "Use fizzles out",
+          "what_changed": "By the 1920s, cowrie use as currency had finally fizzled out in favor of colonial paper money and coin.",
+          "why": "Colonial monetary policy, taxation in sterling, and the spread of WACB currency.",
+          "people": [],
+          "sources": [
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency"
+          ]
+        }
+      ],
+      "image_hints": [
+        "cowrie shell money West Africa strings",
+        "cowrie currency Nigeria museum"
+      ],
+      "images": [],
+      "era_group": "pre-colonial"
+    },
+    {
+      "id": "manilla",
+      "slug": "manillas",
+      "name": "Manillas (Okpoho)",
+      "category": "metal-object",
+      "era": "c. 1500 to 1949",
+      "issuer": "European manufacturers (Portugal, later Birmingham & Bristol, England) for West African trade",
+      "first_used": "documented at Calabar by 1505",
+      "withdrawn": "1949-04-01 (ceased to be legal tender)",
+      "status": "demonetized",
+      "summary": "Horseshoe-shaped copper/brass rings — the first true general-purpose currency known in West Africa. Originated as a means of exchange in Calabar. Used for market purchases, bride price, fines, payment of diviners, and burial money. Central to the slave trade, later the palm-oil trade. The Efik word 'Okpoho' (money/brass) became a universal name for them.",
+      "known_types": [
+        "Okpoho",
+        "Okombo",
+        "Abi",
+        "Mkporo",
+        "Popo",
+        "Antony",
+        "Congo Singolo",
+        "Onadoo",
+        "Finniman Fawfinna",
+        "Nkobukob-Onoudu"
+      ],
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "1505",
+          "title": "Earliest documented values at Calabar",
+          "what_changed": "A slave could be bought for 8-10 manillas; an elephant's tusk for one copper manilla.",
+          "why": "Portuguese traders established manillas as trade currency on the Calabar coast.",
+          "people": [],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Manilla_(money)",
+            "https://web.prm.ox.ac.uk/rpr/index.php/object-biography-index/19-prmcollection/78-manilla/index.html"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "1500s-1800s",
+          "title": "Principal currency of the slave trade",
+          "what_changed": "By the early 16th century manillas became the principal currency of the Atlantic slave trade; Portuguese supplanted by British, French and Dutch. 12-15 brass manillas purchased one slave at the height of the trade. Production centered in Birmingham and Bristol.",
+          "why": "European plantation economies in the Americas drove demand; manillas were the accepted medium on the coast.",
+          "people": [],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Manilla_(money)",
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency"
+          ]
+        },
+        {
+          "change_no": 3,
+          "date": "1856",
+          "title": "Five patterns documented",
+          "what_changed": "A report by the British Consul of Fernando Po listed five different patterns of manillas in use in Nigeria, each valued differently by region — partly by the sound they made when struck.",
+          "why": "Regional preferences meant specific manilla types were only accepted in specific markets.",
+          "people": [
+            "British Consul of Fernando Po (1856 report)"
+          ],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Manilla_(money)"
+          ]
+        },
+        {
+          "change_no": 4,
+          "date": "1890s",
+          "title": "Shift to the palm-oil economy",
+          "what_changed": "With the slave trade wound down, manilla use in the export economy centered on the palm-oil trade. Though legal tender, manillas floated against British and French West African currencies, and palm-oil trading companies manipulated their value during market season.",
+          "why": "Abolition ended the original demand; palm oil became the region's export commodity.",
+          "people": [],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Manilla_(money)"
+          ]
+        },
+        {
+          "change_no": 5,
+          "date": "1902",
+          "title": "Native Currency Proclamation",
+          "what_changed": "The import of manillas into Nigeria was prohibited except with the permission of the High Commissioner.",
+          "why": "To encourage the use of coined (British) money. Locals kept using manillas regardless, well into the 1940s.",
+          "people": [],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Manilla_(money)",
+            "https://www.ashmolean.org/article/brass-manilla-west-africa"
+          ]
+        },
+        {
+          "change_no": 6,
+          "date": "1948",
+          "title": "Operation Manilla — the great recall",
+          "what_changed": "The British undertook a major recall to replace manillas with British West African currency. Redemption rates: Okpoho at 3d, Okombo at 1d, Abi at a halfpenny. 32.5 million Okpoho, 250,000 Okombo and 50,000 Abi were handed in — just over 32 million pieces exchanged for a total of £401,135 and melted down; a European metal dealer purchased 2,460 tons; the exercise cost the taxpayer around £284,000.",
+          "why": "Exchange-rate manipulation in the palm-oil trade and the administrative problem of a floating dual currency.",
+          "people": [],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Manilla_(money)",
+            "https://www.bowers.org/index.php/collections-blog/manilla-portfolio-west-african-worn-currency"
+          ]
+        },
+        {
+          "change_no": 7,
+          "date": "1949-04-01",
+          "title": "Legal tender status ends",
+          "what_changed": "After a six-month withdrawal period, manillas ceased to be legal tender in British West Africa. Individuals were permitted to keep a maximum of 200 for ceremonies such as marriages and burials.",
+          "why": "Completion of Operation Manilla.",
+          "people": [],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Manilla_(money)"
+          ]
+        },
+        {
+          "change_no": 8,
+          "date": "1968",
+          "title": "Afterlife on Biafran banknotes",
+          "what_changed": "The Bank of Biafra featured a manilla on its post-1968 five and ten shilling notes, and later coinage — an homage to the region's indigenous money.",
+          "why": "Symbol of south-eastern Nigerian monetary heritage.",
+          "people": [],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Manilla_(money)",
+            "https://www.ashmolean.org/article/brass-manilla-west-africa"
+          ]
+        }
+      ],
+      "image_hints": [
+        "Okpoho manilla brass horseshoe currency",
+        "manilla money Benin bronze plaque",
+        "Operation Manilla 1948 photograph"
+      ],
+      "images": [],
+      "era_group": "pre-colonial"
+    },
+    {
+      "id": "british-coinage",
+      "slug": "british-west-african-coinage-1880",
+      "name": "British Coinage (Shillings & Pence, 1880 Ordinance)",
+      "category": "coin-series",
+      "era": "colonial",
+      "issuer": "Bank of England (managed); distributed by the Bank for British West Africa",
+      "first_used": "1880",
+      "withdrawn": "superseded by WACB currency from 1912",
+      "status": "withdrawn",
+      "summary": "The first major official currency issue in Nigeria, sequel to the colonial ordinance of 1880 which introduced shillings and pence as legal tender in British West Africa.",
+      "denominations": [
+        "1 shilling",
+        "1 penny",
+        "1/2 penny",
+        "1/10 penny"
+      ],
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "1880",
+          "title": "Colonial ordinance introduces shillings and pence",
+          "what_changed": "Shillings and pence became legal tender currency in British West Africa. Coin units: one shilling, one penny, half penny, one-tenth penny — managed by the Bank of England, distributed by the Bank for British West Africa until 1912.",
+          "why": "Colonial administration sought a uniform sterling-based money economy, displacing cowries and manillas.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "1912",
+          "title": "Handover to the West African Currency Board",
+          "what_changed": "Currency supply responsibility passed to the newly constituted WACB.",
+          "why": "Centralized colonial currency management across Nigeria, Ghana, Sierra Leone and the Gambia.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        }
+      ],
+      "image_hints": [
+        "British West Africa one tenth penny coin",
+        "Bank for British West Africa historic"
+      ],
+      "images": [],
+      "era_group": "colonial"
+    },
+    {
+      "id": "wacb-pound",
+      "slug": "west-african-pound",
+      "name": "West African Pound (WACB Currency)",
+      "category": "currency-system",
+      "era": "colonial",
+      "issuer": "West African Currency Board (WACB)",
+      "first_used": "1912",
+      "withdrawn": "notes/coins withdrawn from 1959-07-01; legal tender status withdrawn 1962-07-01",
+      "status": "demonetized",
+      "summary": "From 1912 to 1959 the WACB issued the first set of banknotes and coins in Nigeria, Ghana, Sierra Leone and the Gambia. Highest banknote: one pound. Highest coin: one shilling.",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "1912",
+          "title": "WACB constituted",
+          "what_changed": "The British West African Currency Board was constituted to control currency supply to the British West African colonies.",
+          "why": "Uniform colonial monetary administration.",
+          "people": [],
+          "sources": [
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency",
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "1916-1918",
+          "title": "First WACB notes; 1918 emergency issue",
+          "what_changed": "WACB issued 2/-, 10/- and 20 shilling notes in 1916-1918, but before supplies reached Nigeria, Nigerian authorities were forced to issue their own emergency currency in 1918 (government issues of 1/-, 10/- and 20/-).",
+          "why": "WWI shipping disruptions delayed note deliveries.",
+          "people": [],
+          "sources": [
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency",
+            "https://en.wikipedia.org/wiki/Nigerian_pound"
+          ]
+        },
+        {
+          "change_no": 3,
+          "date": "1923",
+          "title": "Notes withdrawn after poor reception",
+          "what_changed": "The notes were received poorly and withdrawn, as few could afford to use them.",
+          "why": "Low purchasing power of the population relative to note denominations; preference for coin.",
+          "people": [],
+          "sources": [
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency"
+          ]
+        },
+        {
+          "change_no": 4,
+          "date": "1928-1941",
+          "title": "Restyled notes reintroduced",
+          "what_changed": "Better-quality restyled notes were reintroduced, with the board continuing to restyle and issue new notes to meet demand.",
+          "why": "Growing currency demand in the colonial economy.",
+          "people": [],
+          "sources": [
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency"
+          ]
+        },
+        {
+          "change_no": 5,
+          "date": "1954",
+          "title": "Five pound note issued",
+          "what_changed": "The £5 note was issued — the highest note in circulation at the time.",
+          "why": "Increased currency demands.",
+          "people": [],
+          "sources": [
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency"
+          ]
+        },
+        {
+          "change_no": 6,
+          "date": "1959-07-01",
+          "title": "CBN takes over; WACB withdrawal begins",
+          "what_changed": "The Central Bank of Nigeria issued Nigerian currency banknotes; WACB-issued notes and coins were withdrawn.",
+          "why": "Independence approaching; national monetary sovereignty.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        },
+        {
+          "change_no": 7,
+          "date": "1962-07-01",
+          "title": "Legal tender status withdrawn",
+          "what_changed": "Legal tender status was formally withdrawn from West African Currency Board money.",
+          "why": "Completion of the transition to national currency.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/gallery.html"
+          ]
+        }
+      ],
+      "image_hints": [
+        "West African Currency Board one pound note",
+        "WACB shilling coin 1920"
+      ],
+      "images": [],
+      "era_group": "colonial"
+    },
+    {
+      "id": "nigerian-pound",
+      "slug": "nigerian-pound",
+      "name": "Nigerian Pound (£)",
+      "category": "currency-system",
+      "era": "independence",
+      "issuer": "Central Bank of Nigeria",
+      "first_used": "1959-07-01",
+      "withdrawn": "1973-01-01 (replaced by the naira at £1 = ₦2)",
+      "status": "demonetized",
+      "summary": "Nigeria's first national currency, at parity with sterling with free convertibility. Subdivided into 20 shillings of 12 pence each. Nigeria was the last country to abandon the pre-decimal £sd system.",
+      "denominations_notes": [
+        "£5",
+        "£1",
+        "10/-",
+        "5/-"
+      ],
+      "denominations_coins": [
+        "2/-",
+        "3d",
+        "1d",
+        "1/2d"
+      ],
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "1959-07-01",
+          "title": "First CBN issue",
+          "what_changed": "CBN issued notes of £5, £1, 10/- and 5/-, and coins of 2/-, 3d, 1d and 1/2d. Notes dated 15 September 1958 first circulated 1 July 1959.",
+          "why": "National currency ahead of independence (1 October 1960) — economic independence before political independence.",
+          "people": [],
+          "sources": [
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency",
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "1962-07-01",
+          "title": "Inscription change",
+          "what_changed": "The inscription 'FEDERATION OF NIGERIA' at the top of the banknotes was changed to 'FEDERAL REPUBLIC OF NIGERIA'.",
+          "why": "To reflect the country's republican status.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ],
+          "note": "Not a conflict with the 1965 entry: CBN documents the 1962 inscription change and the 1965 colour reissue as two separate events. Both are kept as distinct changes."
+        },
+        {
+          "change_no": 3,
+          "date": "1965",
+          "title": "Republic reissue in new colours",
+          "what_changed": "£5, £1, 10/- and 5/- were reissued in different colours from the 1959 series. Same front pictures, different back illustrations. Coins remained the 1959 issue.",
+          "why": "Nigeria became a republic in 1963; notes changed to reflect the new status.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/gallery.html",
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency"
+          ]
+        },
+        {
+          "change_no": 4,
+          "date": "1968",
+          "title": "Civil war emergency change",
+          "what_changed": "The 1965 notes were changed as a war strategy: new £5, £1, 10/- and 5/- notes issued; 1959 coins retained.",
+          "why": "To stem the misuse of the country's currency notes during the civil war — rendering notes stockpiled by the secessionists worthless.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/Oldnotes/1968.html"
+          ]
+        },
+        {
+          "change_no": 5,
+          "date": "1973-01-01",
+          "title": "Replaced by the naira",
+          "what_changed": "The pound ceased to exist; the naira replaced it at £1 = ₦2 (₦1 = 10 shillings). Nigeria was the last country to abandon the £sd system.",
+          "why": "Government decision to move to a decimal currency system.",
+          "people": [
+            "Obafemi Awolowo (coined the name 'naira')",
+            "Shehu Shagari (launched the naira as minister of finance)"
+          ],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Nigerian_naira",
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        }
+      ],
+      "image_hints": [
+        "Nigerian pound 1959 five pound note",
+        "Nigeria ten shillings note 1968"
+      ],
+      "images": [],
+      "era_group": "pound-era"
+    },
+    {
+      "id": "biafran-pound",
+      "slug": "biafran-pound",
+      "name": "Biafran Pound (£B)",
+      "category": "currency-system",
+      "era": "civil war",
+      "issuer": "Bank of Biafra",
+      "first_used": "1968-01-29",
+      "withdrawn": "1970 (end of the Republic of Biafra; Nigeria refused to treat Biafran money as currency)",
+      "status": "demonetized",
+      "summary": "Currency of the breakaway Republic of Biafra (1967-1970). The Bank of Biafra was one of the first institutions the republic created; it initially retained the Nigerian pound before issuing its own notes. Notes were signed by a Governor and a Director of the Bank of Biafra.",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "1968-01-27",
+          "title": "Ojukwu's currency decree",
+          "what_changed": "General C. Odumegwu Ojukwu announced: 'I have today signed a decree introducing Biafran currency notes which will be the legal tender throughout the Republic of Biafra. By that same decree, Nigeria currency notes will cease to be legal tender in Biafra.'",
+          "why": "Nigeria's 1968 note change had rendered Biafra's Nigerian-pound holdings unusable; monetary sovereignty became a war necessity.",
+          "people": [
+            "General C. Odumegwu Ojukwu"
+          ],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Biafran_pound"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "1968-01-29",
+          "title": "First notes issued: 5/- and £1",
+          "what_changed": "Two denominations issued to the public alongside new postage stamps. Common obverse: palm tree with a large rising sun; value in a disc to the right. Reverse: the 5/- depicts four Biafran girls; the £1 shows the coat of arms.",
+          "why": "The issue was limited to two denominations as a move to deflate the economy.",
+          "people": [],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Biafran_pound",
+            "https://www.banknoteworld.com/banknotes/Banknotes-by-Country/Biafra-Currency/",
+            "https://www.mintageworld.com/note/28-biafra/"
+          ]
+        },
+        {
+          "change_no": 3,
+          "date": "1969",
+          "title": "Aluminium coin series",
+          "what_changed": "Coins of 3d, 6d, 1/- and 2s 6d were minted, all struck in aluminium.",
+          "why": "Small-change needs within Biafran-held territory.",
+          "people": [],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Biafran_pound"
+          ]
+        },
+        {
+          "change_no": 4,
+          "date": "1969-02",
+          "title": "Second note family: 5/-, 10/-, £1, £5, £10",
+          "what_changed": "New family with a small rising sun on the obverse. Reverse designs: oil refinery (10/-), female weaver (£5), male carver (£10). The 5/- and 10/- featured a manilla.",
+          "why": "Expanded denominations to serve everyday exchange amid shrinking territory.",
+          "people": [],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Biafran_pound",
+            "https://www.banknoteworld.com/banknotes/Banknotes-by-Country/Biafra-Currency/",
+            "https://en.wikipedia.org/wiki/Manilla_(money)"
+          ]
+        },
+        {
+          "change_no": 5,
+          "date": "1970-01",
+          "title": "War ends; currency dies with the republic",
+          "what_changed": "Biafra ceased to exist in January 1970. The victorious Nigerian government refused to treat Biafran money as currency — holders lost their fortunes. The notes were afterwards sold as curios in British notaphily shops, typically at an eighth of face value.",
+          "why": "End of the Nigerian Civil War.",
+          "people": [],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Biafran_pound",
+            "https://www.academia.edu/90354750/The_Currency_of_Revolution_in_Southern_Nigeria_1880_1948"
+          ]
+        }
+      ],
+      "image_hints": [
+        "Biafran one pound note 1968 rising sun",
+        "Biafra 10 shillings note manilla",
+        "Biafra aluminium shilling coin 1969"
+      ],
+      "images": [],
+      "era_group": "pound-era"
+    },
+    {
+      "id": "kobo-coins-1973",
+      "slug": "kobo-coins",
+      "name": "Kobo & Naira Coins",
+      "category": "coin-series",
+      "era": "naira",
+      "issuer": "Central Bank of Nigeria",
+      "first_used": "1973-01-01",
+      "withdrawn": "partially; ₦2, ₦1 and 50k remain official but are essentially out of everyday use due to inflation",
+      "status": "dormant",
+      "summary": "The coin arm of the naira system, introduced at decimalization — the first coins issued by an independent Nigeria (all Nigerian-pound coins had been struck by the colonial government in 1959 with Queen Elizabeth II on the obverse).",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "1973-01-01",
+          "title": "First naira-era coins",
+          "what_changed": "Coins introduced at decimalization in denominations of 20k, 10k, 5k, 1k and 1/2k. The 1/2k and 1k were bronze, higher denominations cupronickel; the 1/2 kobo was minted only in 1973.",
+          "why": "Decimal system required new fractional coinage.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html",
+            "https://en.wikipedia.org/wiki/Nigerian_naira"
+          ],
+          "source_disagreement": {
+            "displayed": "cbn",
+            "according_to_cbn": "1973 coins were 20k, 10k, 5k, 1k and 1/2k (https://www.cbn.gov.ng/currency/historycur.html)",
+            "according_to_wikipedia": "1973 coins were 1/2, 1, 5, 10 and 25 kobo (https://en.wikipedia.org/wiki/Nigerian_naira)",
+            "ui_note": "Display the CBN version by default; optionally show the Wikipedia account in a small 'sources differ' footnote on the detail page."
+          }
+        },
+        {
+          "change_no": 2,
+          "date": "1991-10",
+          "title": "Major coin reform",
+          "what_changed": "A completely new coin range was issued: ₦1, 50k, 25k, 10k and 1k — smaller 1k, 10k and 25k in copper-plated steel, 50k and ₦1 in nickel-plated steel. The 5k and 1/2k were withdrawn. The 50k and ₦1 notes were simultaneously replaced by these coins.",
+          "why": "Major reform of the nation's currency structure; inflation had eroded small-note value.",
+          "people": [],
+          "sources": [
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency",
+            "https://en.wikipedia.org/wiki/Nigerian_naira"
+          ]
+        },
+        {
+          "change_no": 3,
+          "date": "2007-02-28",
+          "title": "New 50k, ₦1 and first ₦2 coin",
+          "what_changed": "New coins issued in 50k, ₦1 and ₦2 — the ₦1 and ₦2 bimetallic. The 1k, 10k and 25k coins were withdrawn from the market. The ₦1 coin's reverse bears the portrait of Herbert Macaulay (1864-1946).",
+          "why": "Part of the 2007 currency restructuring under CBN governor Chukwuma Soludo.",
+          "people": [
+            "Chukwuma Soludo (CBN governor)",
+            "Herbert Macaulay (portrait)"
+          ],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Nigerian_naira",
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency",
+            "https://www.mintnigeria.com/currency-history.php"
+          ]
+        },
+        {
+          "change_no": 4,
+          "date": "2010s-present",
+          "title": "Coins fall out of everyday use",
+          "what_changed": "Due to inflation, Nigerian coins are all essentially worthless now and rarely encountered in daily commerce, though ₦2, ₦1 and 50k remain the official coin denominations.",
+          "why": "Sustained naira depreciation and inflation.",
+          "people": [],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Nigerian_naira",
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency"
+          ]
+        }
+      ],
+      "image_hints": [
+        "Nigeria 1973 kobo coin set",
+        "Nigeria 1991 one naira coin",
+        "Nigeria 2007 two naira bimetallic coin Macaulay"
+      ],
+      "images": [],
+      "era_group": "naira-era"
+    },
+    {
+      "id": "50k-note",
+      "slug": "fifty-kobo-note",
+      "name": "50 Kobo Note",
+      "category": "banknote",
+      "era": "naira",
+      "issuer": "Central Bank of Nigeria",
+      "first_used": "1973-01-01",
+      "withdrawn": "1991 (replaced by coin)",
+      "status": "withdrawn",
+      "summary": "The smallest note of the original 1973 naira family. Notably the only note exempted from the 1984 colour change.",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "1973-01-01",
+          "title": "Introduced at decimalization",
+          "what_changed": "Issued alongside ₦1, ₦5 and ₦10; all notes carried the same picture of the CBN's former headquarters in Marina, Lagos.",
+          "why": "Decimalization required a half-naira note bridging coins and notes.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "1984-04",
+          "title": "Exempted from the colour change",
+          "what_changed": "When all other banknotes in circulation changed colour, the 50 kobo note was the sole exception.",
+          "why": "The 1984 exercise targeted currency trafficking in higher-value notes.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        },
+        {
+          "change_no": 3,
+          "date": "1991",
+          "title": "Replaced by coin",
+          "what_changed": "The 50 kobo note was withdrawn and coined.",
+          "why": "1991 currency-structure reform.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        }
+      ],
+      "image_hints": [
+        "Nigeria 50 kobo note 1973 Marina Lagos"
+      ],
+      "images": [],
+      "era_group": "naira-era"
+    },
+    {
+      "id": "n1-note",
+      "slug": "one-naira-note",
+      "name": "₦1 Note",
+      "category": "banknote",
+      "era": "naira",
+      "issuer": "Central Bank of Nigeria",
+      "first_used": "1973-01-01",
+      "withdrawn": "1991 (replaced by coin)",
+      "status": "withdrawn",
+      "summary": "The base unit note of the original naira family; from 1979 it carried Herbert Macaulay, the nationalist often called the father of Nigerian nationalism.",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "1973-01-01",
+          "title": "Introduced at decimalization",
+          "what_changed": "₦1 (= 10 shillings) became the major currency unit. Note carried the CBN Marina, Lagos headquarters image.",
+          "why": "Decimalization.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "1979-07-02",
+          "title": "National-hero redesign (Herbert Macaulay)",
+          "what_changed": "New note, same 151 x 78 mm size as the ₦20, distinctive colour, portrait of Herbert Macaulay — one of three eminent Nigerians declared national heroes on 1 October 1978 — with cultural engravings on the back.",
+          "why": "Uniform new-generation note family honouring national heroes.",
+          "people": [
+            "Herbert Macaulay"
+          ],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html",
+            "https://www.pulse.ng/lifestyle/food-travel/a-trip-down-memory-lane-the-timeline-of-currency-in-nigeria/257f84d"
+          ]
+        },
+        {
+          "change_no": 3,
+          "date": "1984-04",
+          "title": "Colour change",
+          "what_changed": "Colour changed along with all other notes (except 50 kobo).",
+          "why": "To curb the currency trafficking prevalent at the time.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        },
+        {
+          "change_no": 4,
+          "date": "1991",
+          "title": "Replaced by coin",
+          "what_changed": "The ₦1 note was withdrawn and coined.",
+          "why": "1991 currency-structure reform.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        }
+      ],
+      "image_hints": [
+        "Nigeria one naira note Herbert Macaulay 1979"
+      ],
+      "images": [],
+      "era_group": "naira-era"
+    },
+    {
+      "id": "n5-note",
+      "slug": "five-naira-note",
+      "name": "₦5 Note",
+      "category": "banknote",
+      "era": "naira",
+      "issuer": "Central Bank of Nigeria",
+      "first_used": "1973-01-01",
+      "withdrawn": null,
+      "status": "active",
+      "summary": "Carries Sir Abubakar Tafawa Balewa, Nigeria's first prime minister, since 1979. Reverse: three Yoruba drummers.",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "1973-01-01",
+          "title": "Introduced at decimalization",
+          "what_changed": "Issued in the original naira family with the CBN Marina, Lagos headquarters image.",
+          "why": "Decimalization.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "1979-07-02",
+          "title": "National-hero redesign (Tafawa Balewa)",
+          "what_changed": "New note, 151 x 78 mm, distinctive colour, portrait of Sir Abubakar Tafawa Balewa; reverse shows three Yoruba drummers.",
+          "why": "New-generation family honouring national heroes declared 1 October 1978.",
+          "people": [
+            "Sir Abubakar Tafawa Balewa"
+          ],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html",
+            "https://en.wikipedia.org/wiki/Banknotes_of_the_Nigerian_naira"
+          ]
+        },
+        {
+          "change_no": 3,
+          "date": "1984-04",
+          "title": "Colour change",
+          "what_changed": "Colour changed along with all other notes (except 50 kobo).",
+          "why": "To curb currency trafficking.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        },
+        {
+          "change_no": 4,
+          "date": "2007-02-28",
+          "title": "Redesigned (paper)",
+          "what_changed": "Reissued in a new, smaller design (130 x 72 mm family size) as part of the 2007 restructuring. Originally slated for polymer, but the ₦5 was delayed and issued in paper.",
+          "why": "2007 economic reforms / currency restructuring.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html",
+            "https://en.wikipedia.org/wiki/Nigerian_naira"
+          ]
+        },
+        {
+          "change_no": 5,
+          "date": "2009-09-30",
+          "title": "Converted to polymer",
+          "what_changed": "The redesigned ₦5 was converted to polymer substrate, following the successful performance of the ₦20 polymer note.",
+          "why": "Durability of polymer proven by the ₦20 pilot.",
+          "people": [
+            "Sanusi Lamido Sanusi (CBN governor at conversion)"
+          ],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html",
+            "https://en.wikipedia.org/wiki/Nigerian_naira"
+          ]
+        }
+      ],
+      "image_hints": [
+        "5 naira note Tafawa Balewa polymer",
+        "5 naira 1979 note Nigeria"
+      ],
+      "images": [],
+      "era_group": "naira-era"
+    },
+    {
+      "id": "n10-note",
+      "slug": "ten-naira-note",
+      "name": "₦10 Note",
+      "category": "banknote",
+      "era": "naira",
+      "issuer": "Central Bank of Nigeria",
+      "first_used": "1973-01-01",
+      "withdrawn": null,
+      "status": "active",
+      "summary": "The highest note of the original 1973 family. Carries Alvan Ikoku, educationist and politician, since 1979. Reverse: two women carrying calabashes.",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "1973-01-01",
+          "title": "Introduced at decimalization — the highest note",
+          "what_changed": "Issued as the highest denomination of the new naira system, with the CBN Marina, Lagos headquarters image.",
+          "why": "Decimalization.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "1979-07-02",
+          "title": "National-hero redesign (Alvan Ikoku)",
+          "what_changed": "New note, 151 x 78 mm (same size as the 1977 ₦20), distinctive colour, portrait of Alvan Ikoku; reverse depicts two women carrying calabashes.",
+          "why": "New-generation family honouring national heroes declared 1 October 1978.",
+          "people": [
+            "Alvan Ikoku"
+          ],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html",
+            "https://en.wikipedia.org/wiki/Banknotes_of_the_Nigerian_naira"
+          ]
+        },
+        {
+          "change_no": 3,
+          "date": "1984-04",
+          "title": "Colour change",
+          "what_changed": "Colour changed along with all other notes (except 50 kobo).",
+          "why": "To curb currency trafficking prevalent at the time.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        },
+        {
+          "change_no": 4,
+          "date": "2007-02-28",
+          "title": "Redesigned (paper)",
+          "what_changed": "Reissued in a new smaller design in the 2007 restructuring; originally planned as polymer but issued in paper after delays.",
+          "why": "2007 economic reforms / currency restructuring.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html",
+            "https://en.wikipedia.org/wiki/Nigerian_naira"
+          ]
+        },
+        {
+          "change_no": 5,
+          "date": "2009-09-30",
+          "title": "Converted to polymer",
+          "what_changed": "Converted to polymer substrate following the ₦20 polymer's successful performance.",
+          "why": "Durability; completion of the lower-denomination polymer program.",
+          "people": [
+            "Sanusi Lamido Sanusi (CBN governor at conversion)"
+          ],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        }
+      ],
+      "image_hints": [
+        "10 naira note Alvan Ikoku polymer",
+        "10 naira 1979 note calabash women",
+        "10 naira 1973 note CBN Marina"
+      ],
+      "images": [
+        {
+          "src": "/images/ten-naira-note/cover.jpg",
+          "alt": "Current polymer ten naira note, front",
+          "caption": null,
+          "credit": "REPLACE — e.g. CBN currency gallery or own photography",
+          "change_ref": null,
+          "placeholder": true
+        },
+        {
+          "src": "/images/ten-naira-note/1973-first-issue-front.jpg",
+          "alt": "1973 ten naira note showing CBN Marina headquarters",
+          "caption": "The 1973 first issue",
+          "credit": "REPLACE",
+          "change_ref": 1,
+          "placeholder": true
+        },
+        {
+          "src": "/images/ten-naira-note/1979-alvan-ikoku-front.jpg",
+          "alt": "1979 ten naira note with Alvan Ikoku portrait",
+          "caption": "The 1979 redesign",
+          "credit": "REPLACE",
+          "change_ref": 2,
+          "placeholder": true
+        }
+      ],
+      "era_group": "naira-era"
+    },
+    {
+      "id": "n20-note",
+      "slug": "twenty-naira-note",
+      "name": "₦20 Note",
+      "category": "banknote",
+      "era": "naira",
+      "issuer": "Central Bank of Nigeria",
+      "first_used": "1977-02-11",
+      "withdrawn": null,
+      "status": "active",
+      "summary": "The first Nigerian banknote to bear the portrait of a Nigerian citizen — General Murtala Ramat Muhammed. Still nicknamed 'Muri' in parts of Nigeria, and the only naira note to carry a military figure. Reverse: Ladi Kwali, the celebrated potter.",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "1977-02-11",
+          "title": "Introduced as the highest denomination",
+          "what_changed": "New ₦20 note issued (151 x 78 mm), the first in Nigeria to bear the portrait of a prominent Nigerian citizen: the late Head of State, General Murtala Ramat Muhammed (1938-1976). Issued on the 1st anniversary of his assassination as a tribute; he was declared a national hero on 1 October 1978.",
+          "why": "Driven by the growth of the economy, preference for cash transactions and the need for convenience.",
+          "people": [
+            "General Murtala Ramat Muhammed (portrait)"
+          ],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html",
+            "https://nairadiary.com/the-history-of-money-in-nigeria/"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "1984-04",
+          "title": "Colour change",
+          "what_changed": "Colour changed along with all other notes (except 50 kobo).",
+          "why": "To curb currency trafficking. The military head of state at the time was Muhammadu Buhari.",
+          "people": [
+            "Muhammadu Buhari (head of state during the exercise)"
+          ],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html",
+            "https://naijaphilia.wordpress.com/2023/02/06/naija-flashback-history-of-nigerias-currency-notes/"
+          ]
+        },
+        {
+          "change_no": 3,
+          "date": "2007-02-28",
+          "title": "First polymer banknote in Nigeria",
+          "what_changed": "The ₦20 was issued for the first time in polymer substrate — the pilot for the polymer program. Reverse features potter Ladi Kwali.",
+          "why": "Part of the 2007 economic reforms; polymer chosen for durability.",
+          "people": [
+            "Chukwuma Soludo (CBN governor)",
+            "Ladi Kwali (reverse portrait)"
+          ],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html",
+            "https://en.wikipedia.org/wiki/Banknotes_of_the_Nigerian_naira"
+          ]
+        }
+      ],
+      "image_hints": [
+        "20 naira polymer note Murtala Muhammed",
+        "20 naira 1977 first issue",
+        "Ladi Kwali 20 naira reverse"
+      ],
+      "images": [],
+      "era_group": "naira-era"
+    },
+    {
+      "id": "n50-note",
+      "slug": "fifty-naira-note",
+      "name": "₦50 Note ('WaZoBia')",
+      "category": "banknote",
+      "era": "naira",
+      "issuer": "Central Bank of Nigeria",
+      "first_used": "1991-10",
+      "withdrawn": null,
+      "status": "active",
+      "summary": "Celebrated as the 'WaZoBia' note — 'wa', 'zo', 'bia' meaning 'come' in Yoruba, Hausa and Igbo. Front: four portraits of ordinary Nigerians — three men representing Hausa, Igbo and Yoruba, and a woman symbolising the Middle Belt. Reverse: fishermen at work.",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "1991-10",
+          "title": "Introduced as the highest denomination",
+          "what_changed": "Issued under the military government of Ibrahim Badamosi Babangida as the new highest note, with portraits of four ordinary Nigerians representing the nation's ethnic groups; ₦1 and 50k notes were simultaneously withdrawn and coined.",
+          "why": "Inflation and the 1991 currency-structure reform.",
+          "people": [
+            "Ibrahim Badamosi Babangida (head of state)"
+          ],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Nigerian_fifty-naira_note",
+            "https://naijaphilia.wordpress.com/2023/02/06/naija-flashback-history-of-nigerias-currency-notes/",
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "2007-02-28",
+          "title": "Redesigned",
+          "what_changed": "Reissued in a new design with ornamental patterns and geometric motifs adapted from Nigerian traditional art; colours chosen for distinctiveness and clear identification. Originally intended as polymer, issued in paper after delays.",
+          "why": "2007 economic reforms / restructuring.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/gallery/N50.html",
+            "https://en.wikipedia.org/wiki/Nigerian_naira"
+          ]
+        },
+        {
+          "change_no": 3,
+          "date": "2009-09-30",
+          "title": "Converted to polymer",
+          "what_changed": "The ₦50 converted to polymer substrate following the ₦20's success — completing the all-polymer lower-denomination set (₦5-₦50).",
+          "why": "Durability program.",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        },
+        {
+          "change_no": 4,
+          "date": "2010-09-29",
+          "title": "Golden-jubilee commemorative",
+          "what_changed": "A ₦50 commemorative polymer note was issued to celebrate the 50th anniversary of Nigeria's independence.",
+          "why": "National golden jubilee (1960-2010).",
+          "people": [],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        }
+      ],
+      "image_hints": [
+        "50 naira WaZoBia note four portraits",
+        "50 naira commemorative 2010 polymer",
+        "50 naira fishermen reverse"
+      ],
+      "images": [],
+      "era_group": "naira-era"
+    },
+    {
+      "id": "n100-note",
+      "slug": "one-hundred-naira-note",
+      "name": "₦100 Note",
+      "category": "banknote",
+      "era": "naira",
+      "issuer": "Central Bank of Nigeria",
+      "first_used": "1999-12-01",
+      "withdrawn": null,
+      "status": "active",
+      "summary": "First of the 'new generation' high-denomination notes, incorporating the most recent security-printing developments of its time. Front: Chief Obafemi Awolowo, former Premier of the Western Region. Back: Zuma Rock.",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "1999-12-01",
+          "title": "Introduced",
+          "what_changed": "New ₦100 note with advanced security printing on paper and ink; intricate designs of subdued merging colours. Portrait of Chief Obafemi Awolowo on the front; Zuma Rock on the back.",
+          "why": "Response to expansion in economic activities and the need for an efficient payments system.",
+          "people": [
+            "Chief Obafemi Awolowo (portrait)"
+          ],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/gallery/N100.html",
+            "https://www.cbn.gov.ng/currency/historycur.html"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "post-1999 (later prints)",
+          "title": "The Zuma Rock caption correction",
+          "what_changed": "The first prints captioned Zuma Rock as located in the Federal Capital Territory, but it is actually situated in Niger State. Later prints removed the reference to 'FCT, ABUJA'.",
+          "why": "Factual error on the note.",
+          "people": [],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Nigerian_naira"
+          ]
+        },
+        {
+          "change_no": 3,
+          "date": "2014-12-19",
+          "title": "Centenary commemorative",
+          "what_changed": "A specially redesigned ₦100 issued to celebrate 100 years since the 1914 amalgamation of the Northern and Southern protectorates. Kept the Awolowo portrait but added a new colour scheme, revised security features, 'One Nigeria, Great Promise' in microprinting, and a QR code on the back linking to a website about Nigeria's history.",
+          "why": "Nigeria's centenary as a nation (1914-2014).",
+          "people": [],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Nigerian_naira",
+            "https://www.cbn.gov.ng/currency/historycur.html",
+            "https://naijaphilia.wordpress.com/2023/02/06/naija-flashback-history-of-nigerias-currency-notes/"
+          ]
+        }
+      ],
+      "image_hints": [
+        "100 naira note Awolowo Zuma Rock",
+        "100 naira centenary 2014 commemorative QR code"
+      ],
+      "images": [],
+      "era_group": "naira-era"
+    },
+    {
+      "id": "n200-note",
+      "slug": "two-hundred-naira-note",
+      "name": "₦200 Note",
+      "category": "banknote",
+      "era": "naira",
+      "issuer": "Central Bank of Nigeria",
+      "first_used": "2000-11",
+      "withdrawn": null,
+      "status": "active",
+      "summary": "Front: Sir Ahmadu Bello, the Sardauna of Sokoto and first Premier of Northern Nigeria, since 2000. Reverse: a pyramid of agricultural commodities and livestock farming. Street nickname: '20 faiba' (₦10 in 20 places).",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "2000-11-01",
+          "title": "Introduced",
+          "what_changed": "New ₦200 note with the same class of security features as the ₦100. Portrait of Sir Ahmadu Bello; agricultural pyramid and livestock on the reverse with the National Coat of Arms and yellow trumpet flowers.",
+          "why": "Expansion in economic activities; efficient payments system.",
+          "people": [
+            "Sir Ahmadu Bello (portrait)"
+          ],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html",
+            "https://en.wikipedia.org/wiki/Nigerian_two-hundred-naira_note",
+            "https://www.pulse.ng/lifestyle/food-travel/a-trip-down-memory-lane-the-timeline-of-currency-in-nigeria/257f84d"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "2022-11-23",
+          "title": "Redesigned (colour swap to red)",
+          "what_changed": "Announced 23 October 2022 by CBN governor Godwin Emefiele; unveiled by President Muhammadu Buhari on 23 November 2022. No changes to existing features — only the overall colour changed (₦200 in red). Old notes usable until the announced deadline (Buhari stated old ₦200 could be used till 10 April 2023). Printed locally by the Nigerian Security Printing and Minting Plc.",
+          "why": "To reduce counterfeiting and corruption; bring hoarded currency into the banking system; first major redesign in almost 20 years.",
+          "people": [
+            "Godwin Emefiele (CBN governor)",
+            "Muhammadu Buhari (president, approved and unveiled)"
+          ],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Nigerian_two-hundred-naira_note",
+            "https://www.channelstv.com/2022/11/23/buhari-unveils-re-designed-naira-notes/amp/",
+            "https://www.bellanaija.com/2022/11/nigeria-naira-note-new-look/"
+          ]
+        }
+      ],
+      "image_hints": [
+        "200 naira note Ahmadu Bello",
+        "redesigned 200 naira 2022 red"
+      ],
+      "images": [],
+      "era_group": "naira-era"
+    },
+    {
+      "id": "n500-note",
+      "slug": "five-hundred-naira-note",
+      "name": "₦500 Note",
+      "category": "banknote",
+      "era": "naira",
+      "issuer": "Central Bank of Nigeria",
+      "first_used": "2001-04",
+      "withdrawn": null,
+      "status": "active",
+      "summary": "Front: Dr. Nnamdi Azikiwe, first President of the Federal Republic of Nigeria. Back: an offshore oil rig. The highest denomination in the country when introduced.",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "2001-04-04",
+          "title": "Introduced as the highest denomination",
+          "what_changed": "New ₦500 note. Portrait of Dr. Nnamdi Azikiwe on the front; offshore oil rig on the back.",
+          "why": "Expansion in economic activities; efficient payments system.",
+          "people": [
+            "Dr. Nnamdi Azikiwe (portrait)"
+          ],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html",
+            "https://www.pulse.ng/lifestyle/food-travel/a-trip-down-memory-lane-the-timeline-of-currency-in-nigeria/257f84d"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "2022-11-23",
+          "title": "Redesigned (colour swap to green)",
+          "what_changed": "Redesigned alongside ₦200 and ₦1000; unveiled by President Buhari on 23 November 2022. Only the overall colour changed — ₦500 in green. Locally printed by NSPM Plc.",
+          "why": "Counterfeiting and corruption control; currency-in-circulation management ahead of the 2023 elections.",
+          "people": [
+            "Godwin Emefiele (CBN governor)",
+            "Muhammadu Buhari (president)"
+          ],
+          "sources": [
+            "https://www.bellanaija.com/2022/11/nigeria-naira-note-new-look/",
+            "https://english.news.cn/africa/20221123/0dab9a3dd33b447c915cf588a8d3247f/c.html"
+          ]
+        }
+      ],
+      "image_hints": [
+        "500 naira note Nnamdi Azikiwe oil rig",
+        "redesigned 500 naira 2022 green"
+      ],
+      "images": [],
+      "era_group": "naira-era"
+    },
+    {
+      "id": "n1000-note",
+      "slug": "one-thousand-naira-note",
+      "name": "₦1000 Note",
+      "category": "banknote",
+      "era": "naira",
+      "issuer": "Central Bank of Nigeria",
+      "first_used": "2005-10-12",
+      "withdrawn": null,
+      "status": "active",
+      "summary": "The highest denomination in circulation. Front: Alhaji Aliyu Mai-Bornu and Dr. Clement Nyong Isong — the first and second indigenous Governors of the CBN. Back: the CBN corporate head office, Abuja.",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "2005-10-12",
+          "title": "Introduced as the highest denomination",
+          "what_changed": "Released with the most advanced security features of any naira note to date. Dual portraits of the first two indigenous CBN governors; CBN Abuja headquarters on the back.",
+          "why": "Expansion in economic activities; efficient payments system.",
+          "people": [
+            "Alhaji Aliyu Mai-Bornu (portrait)",
+            "Dr. Clement Nyong Isong (portrait)"
+          ],
+          "sources": [
+            "https://www.cbn.gov.ng/currency/historycur.html",
+            "https://www.penglobalinc.com/naira-timeline-of-nigerias-currency"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "2022-11-23",
+          "title": "Redesigned (colour swap to blue)",
+          "what_changed": "Redesigned alongside ₦200 and ₦500; unveiled by President Buhari on 23 November 2022. Only the overall colour changed — ₦1000 in blue. Emefiele cited Section 2(b), Section 18 and Section 19(a)(b) of the CBN Act 2007 as the legal basis; CBN pledged to redesign every 5-8 years going forward.",
+          "why": "Reduce counterfeiting, bring hoarded cash into banks, control currency in circulation, support the cashless policy. Nigeria is one of only four of Africa's 54 countries that prints its own currency (via NSPM Plc).",
+          "people": [
+            "Godwin Emefiele (CBN governor)",
+            "Muhammadu Buhari (president)"
+          ],
+          "sources": [
+            "https://business247news.com/2022/11/23/emefiele-speaks-on-benefits-of-redesigned-naira-notes/",
+            "https://www.legit.ng/business-economy/money/1505690-buhari-praises-cbn-technology-redesign-200-500-1000-naira-notes/",
+            "https://www.bellanaija.com/2022/11/nigeria-naira-note-new-look/"
+          ]
+        }
+      ],
+      "image_hints": [
+        "1000 naira note Mai-Bornu Isong",
+        "redesigned 1000 naira 2022 blue"
+      ],
+      "images": [],
+      "era_group": "naira-era"
+    },
+    {
+      "id": "n5000-proposed",
+      "slug": "proposed-five-thousand-naira-note",
+      "name": "₦5000 Note (Proposed, Never Issued)",
+      "category": "proposed",
+      "era": "naira",
+      "issuer": "Central Bank of Nigeria (proposal under 'Project CURE')",
+      "first_used": null,
+      "withdrawn": "suspended September 2012",
+      "status": "never-issued",
+      "summary": "The most famous note that never existed. Would have carried three women who contributed to Nigeria's independence — Margaret Ekpo, Funmilayo Ransome-Kuti and Gambo Sawaba — with the National Assembly complex on the reverse.",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "2012-08-23",
+          "title": "Announced under Project CURE",
+          "what_changed": "CBN governor Sanusi Lamido Sanusi announced a naira structure review: a ₦5000 note as the nation's highest denomination; ₦5, ₦10 and ₦20 converted to coins; ₦100-₦1000 redesigned with new security features. The note would feature Margaret Ekpo, Funmilayo Ransome-Kuti and Gambo Sawaba, with the National Assembly complex.",
+          "why": "Sanusi argued it would reduce currency-management costs and counter dollarization: 'those that are using our currency for corruption have already migrated to the dollar... That is why we are introducing a higher bill of value because we don't want to dollarise our economy.'",
+          "people": [
+            "Sanusi Lamido Sanusi (CBN governor)",
+            "Margaret Ekpo (proposed portrait)",
+            "Funmilayo Ransome-Kuti (proposed portrait)",
+            "Gambo Sawaba (proposed portrait)"
+          ],
+          "sources": [
+            "https://nairanotes.wordpress.com/2012/09/14/5-reasons-why-nigeria-should-discard-the-plan-to-print-the-new-5000-naira-notes/",
+            "https://spacesforchange.org/n5000-note-to-be-or-not-to-be/"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "2012-08/09",
+          "title": "National backlash",
+          "what_changed": "The Senate committee on banking directed the CBN to halt the move; the Nigerian Labour Congress opposed it under the 'Project CURE' banner ('legitimizing the devaluation of the currency'); opposition parties, unions and the public pushed back, including street protests. Both chambers of the National Assembly passed motions calling on the president to shelve the plan. CBN issued a September 4 statement calling circulating cost/inflation claims 'malicious' and 'dangerous'.",
+          "why": "Fears of inflation, devaluation signaling, corruption facilitation via high-value cash, and public aversion to the accompanying coin conversion.",
+          "people": [
+            "Senator Bassey Otu (Senate committee on banking)",
+            "David Mark (Senate President)",
+            "Aminu Tambuwal (House Speaker)"
+          ],
+          "sources": [
+            "https://pointblanknews.com/pbn/exclusive/n5000-note-senate-stops-sanusi-2/",
+            "https://saharareporters.com/2012/09/20/official-president-jonathan-suspends-introduction-5000-naira-note",
+            "https://www.centralbanking.com/central-banking/news/2203205/central-bank-of-nigeria-rebuts-false-rumours-on-currency-plans"
+          ]
+        },
+        {
+          "change_no": 3,
+          "date": "2012-09-20",
+          "title": "Suspended by President Jonathan",
+          "what_changed": "President Goodluck Jonathan suspended the introduction of the ₦5000 note. A presidential aide clarified the policy was 'merely being suspended, not abandoned' — but it never returned. Later videos claiming ₦2000/₦5000 notes exist have been fact-checked as false; the CBN has branded them fake.",
+          "why": "Failure to persuade the National Assembly leadership; sustained public opposition.",
+          "people": [
+            "Goodluck Jonathan (president)"
+          ],
+          "sources": [
+            "https://saharareporters.com/2012/09/20/official-president-jonathan-suspends-introduction-5000-naira-note",
+            "https://humanglemedia.com/cbn-did-not-introduce-2000-5000-naira-notes-as-claimed-in-this-video/"
+          ]
+        }
+      ],
+      "image_hints": [
+        "proposed 5000 naira note 2012 mockup",
+        "Funmilayo Ransome-Kuti Margaret Ekpo Gambo Sawaba"
+      ],
+      "images": [],
+      "era_group": "naira-era"
+    },
+    {
+      "id": "soludo-redenomination",
+      "slug": "2007-redenomination-proposal",
+      "name": "Naira Redenomination (Proposed, 100:1)",
+      "category": "proposed",
+      "era": "naira",
+      "issuer": "Central Bank of Nigeria (Soludo proposal)",
+      "first_used": null,
+      "withdrawn": "cancelled 2008",
+      "status": "never-issued",
+      "summary": "The plan to knock two zeroes off the naira — 100 old naira would have become 1 new naira, scheduled for August 2008.",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "2007",
+          "title": "Redenomination announced",
+          "what_changed": "CBN governor Chukwuma Soludo proposed redenominating the naira at 100:1, scheduled for August 2008, aiming to attack inflation and strengthen the naira against the dollar.",
+          "why": "Inflation control and currency-credibility restoration.",
+          "people": [
+            "Chukwuma Soludo (CBN governor)"
+          ],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Nigerian_naira",
+            "https://ayooladejo.com/sanusis-5000-naira-note-and-retrospecting-soludos-failed-re-denomination-exercise/"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "2008",
+          "title": "Cancelled by President Yar'Adua",
+          "what_changed": "The plan was suspended/cancelled by President Umaru Musa Yar'Adua, who had purportedly supported it and changed his mind at the last minute after the public announcement.",
+          "why": "Political reversal at the presidency.",
+          "people": [
+            "Umaru Musa Yar'Adua (president)"
+          ],
+          "sources": [
+            "https://en.wikipedia.org/wiki/Nigerian_naira",
+            "https://ayooladejo.com/sanusis-5000-naira-note-and-retrospecting-soludos-failed-re-denomination-exercise/"
+          ]
+        }
+      ],
+      "image_hints": [
+        "Chukwuma Soludo CBN 2007"
+      ],
+      "images": [],
+      "era_group": "naira-era"
+    },
+    {
+      "id": "enaira",
+      "slug": "enaira",
+      "name": "eNaira (Central Bank Digital Currency)",
+      "category": "digital",
+      "era": "digital",
+      "issuer": "Central Bank of Nigeria",
+      "first_used": "2021-10-25",
+      "withdrawn": null,
+      "status": "dormant",
+      "summary": "Africa's first central bank digital currency, denominated 1:1 with the physical naira. Slogan: 'Same Naira, More Possibilities.' Built on blockchain technology (developed by fintech company Bitt), stored in the eNaira Speed Wallet.",
+      "changelog": [
+        {
+          "change_no": 1,
+          "date": "2021-02",
+          "title": "Context: the crypto ban",
+          "what_changed": "The CBN directed banks to close accounts of cryptocurrency exchanges — the eNaira was partly launched months later as a regulated alternative.",
+          "why": "Concerns over unregulated crypto trading through the banking sector.",
+          "people": [],
+          "sources": [
+            "https://cbdc.wiki/cbdc/nigeria-enaira",
+            "https://www.coindesk.com/policy/2021/10/25/nigerias-enaira-cbdc-goes-live"
+          ]
+        },
+        {
+          "change_no": 2,
+          "date": "2021-10-25",
+          "title": "Launch",
+          "what_changed": "President Muhammadu Buhari launched and activated the eNaira at State House, Abuja (a planned October 1 launch was delayed in deference to the independence anniversary). 500 million eNaira (~$1.21m) minted at launch; 33 banks integrated; over 2,000 customers onboarded and 120+ merchants registered. Nigeria became the first African country to introduce a digital currency, and the second CBDC fully open to the public after the Bahamas.",
+          "why": "Financial inclusion, cheaper remittances, cashless-economy goals, and projected GDP gains ($29bn over 10 years, per Buhari's launch speech).",
+          "people": [
+            "Muhammadu Buhari (president)",
+            "Godwin Emefiele (CBN governor)"
+          ],
+          "sources": [
+            "https://en.wikipedia.org/wiki/ENaira",
+            "https://guardian.ng/news/nigeria-launches-enaira-digital-currency/",
+            "https://www.imf.org/en/news/articles/2021/11/15/na111621-five-observations-on-nigerias-central-bank-digital-currency",
+            "https://fij.ng/article/cbns-enaira-inaccessible-quietly-pulled-offline/"
+          ]
+        },
+        {
+          "change_no": 3,
+          "date": "2022-2024",
+          "title": "Adoption stalls",
+          "what_changed": "Fewer than 0.5% of Nigerians were using the eNaira within a year of launch despite discount incentives; by March 2024 eNaira stood at ₦13.8bn of ₦3.87trn currency in circulation (~0.36%); most wallets reportedly inactive.",
+          "why": "Weak tech infrastructure, unreliable electricity, data-privacy anxieties, low trust in government, competition from established mobile-money platforms, and cash preference.",
+          "people": [],
+          "sources": [
+            "https://en.wikipedia.org/wiki/ENaira",
+            "https://www.withinnigeria.com/2024/12/02/enaira-3-years-after-nigerians-yet-to-embrace-digital-currency/"
+          ]
+        },
+        {
+          "change_no": 4,
+          "date": "2025",
+          "title": "Quietly goes offline; CBN pledges revival",
+          "what_changed": "Four years after launch, the eNaira quietly went offline — the Speed Wallet app disappeared from mobile app stores and OTP sign-ups failed. On August 13, the CBN said it was working to revive the eNaira, attributing the failure to low acceptance and inadequate awareness.",
+          "why": "Sustained non-adoption.",
+          "people": [],
+          "sources": [
+            "https://fij.ng/article/cbns-enaira-inaccessible-quietly-pulled-offline/"
+          ]
+        }
+      ],
+      "image_hints": [
+        "eNaira launch Buhari Emefiele October 2021",
+        "eNaira Speed Wallet app"
+      ],
+      "images": [],
+      "era_group": "digital"
+    }
+  ],
+  "value_timeline": {
+    "description": "Reference points for the 'value at the time' layer of the year view. Exchange values of the naira against the US dollar / sterling over time.",
+    "points": [
+      {
+        "date": "1973-01-01",
+        "note": "Naira introduced at £1 = ₦2 (₦1 = 10 shillings), at parity-linked strength with sterling.",
+        "source": "https://en.wikipedia.org/wiki/Nigerian_naira"
+      },
+      {
+        "date": "1979",
+        "note": "Anecdotal strength: a traveler exchanged ₦700 for $1,000 on arrival in the US; a Lagos-US flight cost ₦280.",
+        "source": "https://nairadiary.com/the-history-of-money-in-nigeria/",
+        "verification": "anecdote reported by Naira Diary interview; treat as illustrative, not official rate"
+      },
+      {
+        "date": "1993-1998",
+        "note": "Naira pegged to the US dollar.",
+        "source": "https://en.wikipedia.org/wiki/Nigerian_naira"
+      },
+      {
+        "date": "2022",
+        "note": "Around ₦415 to $1 (pre-float era reference).",
+        "source": "https://nairadiary.com/the-history-of-money-in-nigeria/"
+      },
+      {
+        "date": "2023-06-14",
+        "note": "Naira fell 23% in one day to ~₦600/$1 as the CBN abandoned the 2017 peg and let it float.",
+        "source": "https://en.wikipedia.org/wiki/Nigerian_naira"
+      },
+      {
+        "date": "2023-07-19",
+        "note": "Record low of ₦853/$1.",
+        "source": "https://en.wikipedia.org/wiki/Nigerian_naira"
+      },
+      {
+        "date": "2024-02",
+        "note": "Fell from ~₦898 to ~₦1,400 in early February, drifting to ~₦1,600 by 30 July 2024.",
+        "source": "https://en.wikipedia.org/wiki/Nigerian_naira"
+      }
+    ]
+  },
+  "ui": {
+    "direction": "Ultra-modern, minimalist. White, black, grey only. Generous whitespace, strong typographic hierarchy, no decorative color — the currency photography is the only color on the page.",
+    "colors": {
+      "background": "#FFFFFF",
+      "ink": "#0A0A0A",
+      "grey-900": "#1A1A1A",
+      "grey-600": "#5C5C5C",
+      "grey-400": "#9B9B9B",
+      "grey-200": "#E5E5E5",
+      "grey-100": "#F5F5F5",
+      "rule": "Only these values. No accent color. Hover/active states use grey shifts, not color.",
+      "inverted_sections": "Detail-page changelog slides may invert to #0A0A0A background with white type — the black sections carry the drama, the white sections carry the reading."
+    },
+    "typography": {
+      "primary": {
+        "family": "Fraunces",
+        "usage": "Display: hero title, currency names, years, changelog slide titles. Use the optical-size axis — big sizes get the high-contrast 144pt cut.",
+        "source": "Google Fonts — https://fonts.google.com/specimen/Fraunces (variable: weight + optical size + SOFT/WONK axes)"
+      },
+      "secondary": {
+        "family": "Satoshi",
+        "usage": "Everything else: body, captions, metadata, buttons, nav, source lines.",
+        "source": "Fontshare (free) — https://www.fontshare.com/fonts/satoshi"
+      },
+      "scale_hint": "Big jumps, few steps: e.g. 12 / 16 / 24 / 40 / 72 / 120px. Years can be oversized Fraunces (grey-200) behind or beside content as a structural element.",
+      "verification": "unverified: 'Satoshi' assumed from 'Santosh's' in the request — confirm this is the intended typeface"
+    },
+    "layout": {
+      "hero": "Full-width, white. Site title in Fraunces, one-line description in Satoshi grey-600, then sort (Currency / Year) and search on one row.",
+      "catalog": "Card grid. Each card: image on grey-100, currency name in Fraunces, era + status metadata in Satoshi grey-400. No borders — spacing and the grey-100 image plate do the separation.",
+      "detail": "One changelog entry per full-viewport slide, scroll-snapped. Alternate or selectively invert slides to black. Each slide: oversized year (Fraunces), title, what/why body (Satoshi), people, source link in grey-400.",
+      "year_view": "Same slide/list pattern but grouped by year across all currencies; each entry links back to its parent currency page."
+    }
+  }
+}

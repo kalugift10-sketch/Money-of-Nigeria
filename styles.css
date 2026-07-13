@@ -1,0 +1,569 @@
+/* ------------------------------------------------------------------
+   The Money of Nigeria — design system
+   Source of truth: the `ui` block in nigerian-currency-directory.json
+   White / black / grey only. No accent color. Separation by spacing
+   and grey-100 plates, not borders.
+------------------------------------------------------------------- */
+
+:root {
+  --bg: #FFFFFF;
+  --ink: #0A0A0A;
+  --grey-900: #1A1A1A;
+  --grey-600: #5C5C5C;
+  --grey-400: #9B9B9B;
+  --grey-200: #E5E5E5;
+  --grey-100: #F5F5F5;
+
+  --serif: "Fraunces", Georgia, serif;
+  --sans: "Satoshi", "Helvetica Neue", Arial, sans-serif;
+
+  --pad: clamp(1.25rem, 4vw, 4rem);
+  --max: 84rem;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+html.snap-mode { scroll-snap-type: y mandatory; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.serif {
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+}
+
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+
+/* ---------------------------------------------------------------
+   Hero / catalog shell
+--------------------------------------------------------------- */
+
+.hero {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(3rem, 9vh, 7rem) var(--pad) clamp(1.5rem, 4vh, 3rem);
+}
+
+.site-title {
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-weight: 560;
+  font-size: clamp(2.75rem, 8.5vw, 7.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  max-width: 14em;
+}
+
+.site-desc {
+  margin-top: 1.25rem;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  color: var(--grey-600);
+  max-width: 44em;
+}
+
+/* Controls row */
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: clamp(2rem, 5vh, 3.5rem);
+}
+
+.sort-toggle {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--grey-100);
+  border-radius: 999px;
+  padding: 0.25rem;
+}
+
+.sort-toggle button {
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  color: var(--grey-600);
+  transition: color 120ms ease, background 120ms ease;
+}
+
+.sort-toggle button:hover { color: var(--ink); }
+
+.sort-toggle button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.search {
+  flex: 1 1 16rem;
+  max-width: 28rem;
+  padding: 0.75rem 1.25rem;
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--ink);
+  background: var(--grey-100);
+  border: none;
+  border-radius: 999px;
+  outline: none;
+}
+
+.search::placeholder { color: var(--grey-400); }
+.search:focus { background: var(--grey-200); }
+
+@media (max-width: 40rem) {
+  .controls { flex-direction: column; align-items: stretch; }
+  .sort-toggle { align-self: flex-start; }
+  .search { flex: 0 0 auto; max-width: none; }
+}
+
+/* ---------------------------------------------------------------
+   Views container
+--------------------------------------------------------------- */
+
+.view {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--pad) clamp(4rem, 10vh, 8rem);
+}
+
+.empty-note {
+  padding: 4rem 0;
+  color: var(--grey-400);
+  font-size: 1.125rem;
+}
+
+/* ---------------------------------------------------------------
+   Currency cards
+--------------------------------------------------------------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: clamp(2rem, 4vw, 3.5rem) clamp(1.25rem, 2.5vw, 2.5rem);
+  margin-top: clamp(2rem, 5vh, 4rem);
+}
+
+@media (max-width: 40rem) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+.card {
+  display: block;
+  text-decoration: none;
+}
+
+.plate {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--grey-100);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plate .ph {
+  font-size: clamp(4rem, 9vw, 6.5rem);
+  font-weight: 500;
+  color: var(--grey-200);
+  line-height: 1;
+  user-select: none;
+}
+
+.plate img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-name {
+  margin-top: 1.1rem;
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-weight: 540;
+  font-size: 1.5rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  transition: color 120ms ease;
+}
+
+.card:hover .card-name { color: var(--grey-600); }
+
+.card-meta {
+  margin-top: 0.35rem;
+  font-size: 0.875rem;
+  color: var(--grey-400);
+}
+
+/* ---------------------------------------------------------------
+   Year view
+--------------------------------------------------------------- */
+
+.year-list { margin-top: clamp(2rem, 5vh, 4rem); }
+
+.year-row {
+  display: grid;
+  grid-template-columns: minmax(9rem, 16rem) 1fr;
+  gap: 1rem 2.5rem;
+  align-items: baseline;
+  padding: clamp(1.5rem, 3.5vh, 2.75rem) 0;
+}
+
+.year-row + .year-row { border: 0; }
+
+.year-big {
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-weight: 420;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--grey-200);
+  word-break: keep-all;
+}
+
+.year-row:hover .year-big { color: var(--grey-400); }
+
+.year-entry-title {
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-weight: 520;
+  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.year-entry-currency {
+  display: inline-block;
+  margin-top: 0.4rem;
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  color: var(--grey-400);
+  text-decoration: none;
+}
+
+.year-entry-currency:hover { color: var(--ink); }
+
+@media (max-width: 40rem) {
+  .year-row { grid-template-columns: 1fr; gap: 0.25rem; }
+}
+
+/* ---------------------------------------------------------------
+   Era view
+--------------------------------------------------------------- */
+
+.era-section { margin-top: clamp(3.5rem, 9vh, 7rem); }
+.era-section:first-child { margin-top: clamp(2rem, 5vh, 4rem); }
+
+.era-head { max-width: 44em; }
+
+.era-label {
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-weight: 540;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+.era-period {
+  margin-top: 0.4rem;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--grey-400);
+}
+
+.era-blurb {
+  margin-top: 0.75rem;
+  color: var(--grey-600);
+}
+
+/* ---------------------------------------------------------------
+   Detail page
+--------------------------------------------------------------- */
+
+.detail-hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(2rem, 6vh, 4rem) var(--pad);
+}
+
+.back-link {
+  align-self: flex-start;
+  font-size: 0.9375rem;
+  color: var(--grey-400);
+  text-decoration: none;
+  margin-bottom: clamp(1.5rem, 5vh, 3.5rem);
+}
+
+.back-link:hover { color: var(--ink); }
+
+.detail-cover {
+  position: relative;
+  aspect-ratio: 21 / 9;
+  max-height: 38vh;
+  width: 100%;
+}
+
+.detail-title {
+  margin-top: clamp(1.5rem, 4vh, 2.5rem);
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-weight: 560;
+  font-size: clamp(2.5rem, 7vw, 6rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+}
+
+.detail-summary {
+  margin-top: 1.25rem;
+  max-width: 44em;
+  font-size: clamp(1rem, 1.6vw, 1.1875rem);
+  color: var(--grey-900);
+}
+
+.detail-meta {
+  margin-top: 1.5rem;
+  font-size: 0.9375rem;
+  color: var(--grey-600);
+  max-width: 50em;
+}
+
+.detail-facts {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--grey-400);
+  max-width: 50em;
+}
+
+.detail-facts .fact + .fact { margin-top: 0.2rem; }
+.detail-facts .fact-label { color: var(--grey-600); font-weight: 500; }
+
+.scroll-hint {
+  margin-top: clamp(1.5rem, 5vh, 3rem);
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--grey-400);
+}
+
+/* Changelog slides */
+
+.slide {
+  min-height: 100vh;
+  min-height: 100svh;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.slide.invert {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.slide-inner {
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(3rem, 8vh, 5rem) var(--pad);
+  display: grid;
+  grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+}
+
+@media (max-width: 56rem) {
+  .slide-inner { grid-template-columns: 1fr; }
+}
+
+.slide-year {
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-weight: 380;
+  font-size: clamp(4rem, 12vw, 9.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--grey-200);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.slide.invert .slide-year { color: var(--grey-900); }
+
+.slide-body { max-width: 40em; }
+
+.slide-kicker {
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--grey-400);
+}
+
+.slide-title {
+  margin-top: 0.6rem;
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-weight: 540;
+  font-size: clamp(1.75rem, 3.6vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+}
+
+.slide-figure { margin-top: 1.75rem; }
+
+.slide-figure .plate { aspect-ratio: 16 / 9; }
+
+.slide.invert .slide-figure .plate { background: var(--grey-900); }
+.slide.invert .slide-figure .ph { color: var(--grey-600); }
+
+.slide-figure figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--grey-400);
+}
+
+.slide-figure.img-missing { display: none; }
+
+.slide-what {
+  margin-top: 1.5rem;
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+}
+
+.slide-why {
+  margin-top: 1.25rem;
+  color: var(--grey-600);
+}
+
+.slide.invert .slide-what { color: var(--grey-100); }
+.slide.invert .slide-why { color: var(--grey-400); }
+
+.slide-label {
+  display: block;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--grey-400);
+  margin-bottom: 0.25rem;
+}
+
+.slide-people {
+  margin-top: 1.25rem;
+  font-size: 0.9375rem;
+  color: var(--grey-600);
+}
+
+.slide.invert .slide-people { color: var(--grey-400); }
+
+.disagree {
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  color: var(--grey-400);
+}
+
+.disagree summary {
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.disagree p { margin-top: 0.6rem; max-width: 40em; }
+
+.slide-sources {
+  margin-top: 1.75rem;
+  font-size: 0.8125rem;
+  color: var(--grey-400);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+}
+
+.slide-sources a {
+  color: var(--grey-400);
+  text-decoration: none;
+}
+
+.slide-sources a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+.slide.invert .slide-sources a:hover { color: var(--bg); }
+
+/* Prev / next navigation */
+
+.detail-nav {
+  scroll-snap-align: end;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(3rem, 10vh, 6rem) var(--pad);
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.detail-nav a {
+  text-decoration: none;
+  max-width: 45%;
+}
+
+.detail-nav .nav-dir {
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--grey-400);
+}
+
+.detail-nav .nav-name {
+  display: block;
+  margin-top: 0.4rem;
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  font-weight: 540;
+  font-size: clamp(1.25rem, 2.6vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  transition: color 120ms ease;
+}
+
+.detail-nav a:hover .nav-name { color: var(--grey-600); }
+
+.detail-nav .nav-next { text-align: right; margin-left: auto; }
+
+/* ---------------------------------------------------------------
+   Footer
+--------------------------------------------------------------- */
+
+.site-footer {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--pad) clamp(3rem, 7vh, 5rem);
+  font-size: 0.8125rem;
+  color: var(--grey-400);
+}
+
+.site-footer p { max-width: 56em; }
