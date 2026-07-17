@@ -21,8 +21,8 @@
     ],
     "source_policy": "Where sources disagree, the Central Bank of Nigeria (cbn.gov.ng) is treated as the authority and displayed by default. Alternate accounts (e.g. Wikipedia) are preserved in 'source_disagreement' objects so the UI can surface them as footnotes.",
     "image_convention": {
-      "folder": "/images/<currency-slug>/",
-      "filename": "<year>-<short-label>.jpg (e.g. /images/ten-naira-note/1979-alvan-ikoku-front.jpg)",
+      "folder": "images/<currency-slug>/",
+      "filename": "<year>-<short-label>.jpg (e.g. images/ten-naira-note/1979-alvan-ikoku-front.jpg)",
       "how_to_add": "1) Save the photo into the folder using the convention. 2) Add an object to that currency's 'images' array below. 3) If the photo belongs to a specific change, set change_ref to that change_no — the detail slide for that change will use it. Images with change_ref null are general/cover images (card + hero of the detail page).",
       "fields": {
         "src": "path to the file",
@@ -108,7 +108,15 @@
         "pre-colonial Nigeria market barter illustration",
         "kolanut salt trade northern Nigeria historic"
       ],
-      "images": [],
+      "images": [
+        {
+          "src": "images/trade-by-barter/market-scene.jpg",
+          "alt": "Black-and-white photograph of a crowded open-air Nigerian market with stalls of baskets and pottery",
+          "caption": "A crowded open-air market — the setting where goods changed hands directly before and alongside coined money.",
+          "credit": "Contributed photograph",
+          "change_ref": null
+        }
+      ],
       "era_group": "pre-colonial"
     },
     {
@@ -179,7 +187,15 @@
         "cowrie shell money West Africa strings",
         "cowrie currency Nigeria museum"
       ],
-      "images": [],
+      "images": [
+        {
+          "src": "images/cowries/cowrie-strand.jpg",
+          "alt": "Strand of white cowrie shells strung together on plant-fibre cord",
+          "caption": "Cowrie shells strung on cord — stringing was how cowries were counted, carried and spent.",
+          "credit": "Contributed photograph",
+          "change_ref": null
+        }
+      ],
       "era_group": "pre-colonial"
     },
     {
@@ -307,7 +323,15 @@
         "manilla money Benin bronze plaque",
         "Operation Manilla 1948 photograph"
       ],
-      "images": [],
+      "images": [
+        {
+          "src": "images/manillas/manilla-collection.jpg",
+          "alt": "Assorted bronze and copper manillas of different sizes and patterns laid out on a wooden surface",
+          "caption": "Bronze and copper manillas in a range of sizes and patterns — different types carried different values.",
+          "credit": "Contributed photograph",
+          "change_ref": null
+        }
+      ],
       "era_group": "pre-colonial"
     },
     {
@@ -454,7 +478,15 @@
         "West African Currency Board one pound note",
         "WACB shilling coin 1920"
       ],
-      "images": [],
+      "images": [
+        {
+          "src": "images/west-african-pound/1958-barclays-dco-five-pounds.jpg",
+          "alt": "Barclays Bank D.C.O. five-pound note dated 29 November 1958",
+          "caption": "A 1958 Barclays Bank D.C.O. five-pound note (a South West Africa issue). Barclays D.C.O. was among the expatriate banks that moved colonial pound currency across British Africa, Nigeria included.",
+          "credit": "Contributed photograph",
+          "change_ref": null
+        }
+      ],
       "era_group": "colonial"
     },
     {
@@ -631,7 +663,15 @@
         "Biafra 10 shillings note manilla",
         "Biafra aluminium shilling coin 1969"
       ],
-      "images": [],
+      "images": [
+        {
+          "src": "images/biafran-pound/ten-shillings-reverse.jpg",
+          "alt": "Reverse of a Bank of Biafra ten-shilling note showing an industrial scene",
+          "caption": "Reverse of a Bank of Biafra ten-shilling note, with an industrial complex vignette.",
+          "credit": "Contributed photograph",
+          "change_ref": null
+        }
+      ],
       "era_group": "pound-era"
     },
     {
@@ -994,7 +1034,7 @@
       ],
       "images": [
         {
-          "src": "/images/ten-naira-note/cover.jpg",
+          "src": "images/ten-naira-note/cover.jpg",
           "alt": "Current polymer ten naira note, front",
           "caption": null,
           "credit": "REPLACE — e.g. CBN currency gallery or own photography",
@@ -1002,7 +1042,7 @@
           "placeholder": true
         },
         {
-          "src": "/images/ten-naira-note/1973-first-issue-front.jpg",
+          "src": "images/ten-naira-note/1973-first-issue-front.jpg",
           "alt": "1973 ten naira note showing CBN Marina headquarters",
           "caption": "The 1973 first issue",
           "credit": "REPLACE",
@@ -1010,7 +1050,7 @@
           "placeholder": true
         },
         {
-          "src": "/images/ten-naira-note/1979-alvan-ikoku-front.jpg",
+          "src": "images/ten-naira-note/1979-alvan-ikoku-front.jpg",
           "alt": "1979 ten naira note with Alvan Ikoku portrait",
           "caption": "The 1979 redesign",
           "credit": "REPLACE",
