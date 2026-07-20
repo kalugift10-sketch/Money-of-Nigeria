@@ -182,6 +182,28 @@ function updateView() {
     : currencyViewHTML(q);
 }
 
+function footerHTML(meta) {
+  const sources = (meta.primary_sources || []).map(url =>
+    `<li><a href="${esc(url)}" target="_blank" rel="noopener">${esc(hostname(url))}</a></li>`
+  ).join('');
+  const year = new Date().getFullYear();
+  return `<footer class="site-footer">
+    <div class="footer-links">
+      <details class="footer-disclosure">
+        <summary>About</summary>
+        <p>${esc(meta.description)}</p>
+      </details>
+      <details class="footer-disclosure">
+        <summary>Sources</summary>
+        <ul class="footer-source-list">${sources}</ul>
+      </details>
+      <a class="footer-link" href="#">Money Playlist ↗</a>
+    </div>
+    <p class="footer-policy">${esc(meta.source_policy)}</p>
+    <p class="footer-credit">Designed by Gift Kalu · © ${year} The Money of Nigeria</p>
+  </footer>`;
+}
+
 function renderCatalog() {
   document.documentElement.classList.remove('snap-mode');
   document.title = SITE_TITLE;
@@ -205,7 +227,7 @@ function renderCatalog() {
       </div>
     </header>
     <main class="view" id="view"></main>
-    <footer class="site-footer"><p>${esc(meta.source_policy)}</p></footer>`;
+    ${footerHTML(meta)}`;
 
   app.querySelectorAll('[data-sort]').forEach(btn => {
     btn.addEventListener('click', () => {

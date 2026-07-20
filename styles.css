@@ -561,9 +561,58 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .site-footer {
   max-width: var(--max);
   margin: 0 auto;
-  padding: 0 var(--pad) clamp(3rem, 7vh, 5rem);
+  padding: clamp(2.5rem, 6vh, 4rem) var(--pad) clamp(3rem, 7vh, 5rem);
+  border-top: 1px solid var(--grey-200);
   font-size: 0.8125rem;
   color: var(--grey-400);
 }
 
-.site-footer p { max-width: 56em; }
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 2rem;
+  margin-bottom: 1.75rem;
+}
+
+.footer-disclosure summary,
+.footer-link {
+  cursor: pointer;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--grey-200);
+  text-underline-offset: 3px;
+}
+
+.footer-disclosure summary:hover,
+.footer-link:hover { text-decoration-color: var(--ink); }
+
+.footer-disclosure { display: inline-block; }
+.footer-disclosure summary { list-style: none; }
+.footer-disclosure summary::-webkit-details-marker { display: none; }
+
+.footer-disclosure p {
+  margin-top: 0.75rem;
+  max-width: 40em;
+  color: var(--grey-400);
+}
+
+.footer-source-list {
+  margin-top: 0.75rem;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.footer-source-list a { color: var(--grey-400); }
+.footer-source-list a:hover { color: var(--ink); }
+
+.footer-policy { max-width: 56em; }
+
+.footer-credit {
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--grey-200);
+  color: var(--grey-400);
+}
