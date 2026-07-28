@@ -224,7 +224,9 @@ function chromeHTML() {
       <a href="#">About</a>
     </nav>
   </header>
-  <audio id="playlist-audio" preload="metadata"></audio>
+  <audio id="playlist-audio" preload="metadata">${
+    PLAYLIST.files.map(f => `<source src="${f}">`).join('')
+  }</audio>
   <div class="yt-audio"><div id="yt-audio"></div></div>`;
 }
 
@@ -241,9 +243,16 @@ function chromeHTML() {
    That one works anywhere, including from a plain file. */
 
 const PLAYLIST = {
-  source: 'youtube',                       // 'youtube' | 'file'
+  source: 'file',                          // 'file' | 'youtube'
+  /* The first of these that exists is used, so the track can sit either
+     beside the page or in audio/. Listed by how likely they are. */
+  files: [
+    'billionaire.mp3',
+    'billionaire.m4a',
+    'billionaire.wav',
+    'audio/money-playlist.mp3'
+  ],
   videoId: 'fv4elyxEnmA',
-  src: 'audio/money-playlist.mp3',
   title: 'Billionaire — Stanley Okorie'
 };
 
@@ -292,7 +301,6 @@ function failToLink(reason) {
 function bindFileSource(btn) {
   audioEl = document.getElementById('playlist-audio');
   if (!audioEl) return;
-  audioEl.src = PLAYLIST.src;
 
   audioEl.addEventListener('loadedmetadata', setReady);
   audioEl.addEventListener('timeupdate', () => {
@@ -301,10 +309,23 @@ function bindFileSource(btn) {
   audioEl.addEventListener('play', () => setPlaying(true));
   audioEl.addEventListener('pause', () => setPlaying(false));
   audioEl.addEventListener('ended', () => { setPlaying(false); setRing(0); });
-  audioEl.addEventListener('error', () => failToLink('file missing'));
+  /* Fires only once every <source> has failed. */
+  audioEl.addEventListener('error', () => failToLink('no track file found'));
+
+  /* Exhausting every <source> leaves networkState at NO_SOURCE without
+     reliably firing an error, so check for it rather than trusting the
+     event — otherwise the button claims to play a track that is absent. */
+  const noTrack = () =>
+    audioEl.networkState === HTMLMediaElement.NETWORK_NO_SOURCE ||
+    !(audioEl.duration > 0);
+
+  setTimeout(() => { if (noTrack()) failToLink('no track file found'); }, 1500);
 
   btn.addEventListener('click', () => {
-    if (btn.dataset.error === 'true') return openTrack();
+    if (btn.dataset.error === 'true' || noTrack()) {
+      failToLink('no track file found');
+      return openTrack();
+    }
     if (audioEl.paused) audioEl.play().catch(() => failToLink('playback refused'));
     else audioEl.pause();
   });
