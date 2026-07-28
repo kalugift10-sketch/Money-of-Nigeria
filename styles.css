@@ -161,6 +161,8 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   white-space: nowrap;
 }
 
+/* Three siblings, 16px apart, per the Figma: the player, then each
+   nav link. The player is its own control — not part of a link. */
 .site-nav { display: flex; align-items: center; gap: 1rem; }
 
 .site-nav a {
@@ -172,103 +174,85 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   white-space: nowrap;
 }
 
-.nav-playlist { display: inline-flex; align-items: center; gap: 0.5rem; }
-
-.icon-pill {
-  display: grid;
-  place-items: center;
-  padding: 0.5rem;
-  border-radius: var(--r-pill);
-  background: var(--brand-tint);
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  text-decoration: underline;
+  text-decoration-color: var(--ink);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
 }
-
-.icon-pill svg { display: block; width: 1rem; height: 1rem; }
-
-.nav-toggle {
-  display: none;
-  position: relative;
-  width: 2.75rem;
-  height: 2.75rem;
-  margin-right: -0.625rem;
-}
-
-/* Bars are absolutely centred so the open state crosses cleanly at the
-   middle. Stacking them in flow makes the two diagonals meet at an end
-   and read as a chevron instead of an X. */
-.nav-toggle .bar {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 1.375rem;
-  height: 2px;
-  margin: -1px 0 0 -0.6875rem;
-  border-radius: 2px;
-  background: var(--ink);
-  transition: transform 240ms ease, opacity 160ms ease;
-}
-
-.nav-toggle .bar:nth-child(1) { transform: translateY(-7px); }
-.nav-toggle .bar:nth-child(3) { transform: translateY(7px); }
 
 .brand:focus-visible,
 .site-nav a:focus-visible,
-.nav-toggle:focus-visible {
+.player-btn:focus-visible {
   outline: 2px solid var(--brand);
   outline-offset: 3px;
   border-radius: 2px;
 }
 
-@media (max-width: 47.9375em) {
-  .nav-toggle { display: block; }
-
-  .site-nav {
-    position: fixed;
-    inset: var(--header-h) 0 0;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    padding: 1.5rem var(--pad) 3rem;
-    background: var(--bg);
-    visibility: hidden;
-    opacity: 0;
-    transform: translateY(-0.5rem);
-    transition: opacity 220ms ease, transform 220ms ease, visibility 0s linear 220ms;
-  }
-
-  .site-header[data-nav-open="true"] .site-nav {
-    visibility: visible;
-    opacity: 1;
-    transform: none;
-    transition-delay: 0s;
-  }
-
-  .site-nav a {
-    padding: 1.125rem 0;
-    font-size: var(--text-title);
-    font-weight: var(--w-regular);
-    border-bottom: 1px solid var(--line);
-  }
-
-  .site-header[data-nav-open="true"] .site-nav a { animation: nav-item-in 260ms ease both; }
-  .site-header[data-nav-open="true"] .site-nav a:nth-child(1) { animation-delay: 60ms; }
-  .site-header[data-nav-open="true"] .site-nav a:nth-child(2) { animation-delay: 120ms; }
-
-  .site-header[data-nav-open="true"] .bar:nth-child(1) { transform: rotate(45deg); }
-  .site-header[data-nav-open="true"] .bar:nth-child(2) { opacity: 0; }
-  .site-header[data-nav-open="true"] .bar:nth-child(3) { transform: rotate(-45deg); }
+/* --- Money playlist player -------------------------------------
+   The green ring is the progress indicator: it draws clockwise from
+   12 o'clock as the track plays. r=20 in a 44 viewBox, so the 2px
+   stroke sits inside the 44px button without clipping. */
+.player-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--r-pill);
+  background: var(--brand-tint);
+  color: var(--ink);
 }
 
-@keyframes nav-item-in {
-  from { opacity: 0; transform: translateY(0.5rem); }
-  to   { opacity: 1; transform: none; }
+.player-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  pointer-events: none;
 }
 
-html.nav-locked { overflow: hidden; }
+.player-ring .ring-track {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 2;
+}
+
+.player-ring .ring-progress {
+  fill: none;
+  stroke: var(--brand);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 125.664;      /* 2πr, r = 20 */
+  stroke-dashoffset: 125.664;     /* fully empty */
+  transition: stroke-dashoffset 200ms linear;
+}
+
+.player-icon { display: grid; place-items: center; }
+.player-icon svg { display: block; width: 1rem; height: 1rem; }
+
+.player-btn .icon-pause { display: none; }
+.player-btn[data-playing="true"] .icon-pause { display: block; }
+.player-btn[data-playing="true"] .icon-volume { display: none; }
+
+.player-btn[data-loading="true"] { opacity: 0.55; }
+
+/* The YouTube iframe is the audio source only; the visible control is
+   the button above. Kept out of flow rather than display:none, which
+   would stop it initialising. */
+.yt-audio {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .site-nav,
-  .nav-toggle .bar { transition-duration: 1ms; }
-  .site-header[data-nav-open="true"] .site-nav a { animation: none; }
+  .player-ring .ring-progress { transition-duration: 1ms; }
 }
 
 /* ---------------------------------------------------------------

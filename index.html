@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <!-- Site chrome renders once and is never re-rendered, so the playlist
+       keeps playing while you move between pages. -->
+  <div id="chrome"></div>
   <div id="app" aria-live="polite"></div>
   <script src="script.js"></script>
 </body>

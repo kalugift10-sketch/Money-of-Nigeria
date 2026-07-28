@@ -182,63 +182,134 @@ function updateView() {
     : currencyViewHTML(q);
 }
 
-/* Site chrome. Rendered at the top of both the catalog and detail views. */
-function headerHTML() {
-  return `<header class="site-header" id="site-header" data-nav-open="false">
+/* ------------------------------------------------------------------
+   Site chrome — rendered once into #chrome, never re-rendered, so the
+   playlist survives navigation between pages.
+------------------------------------------------------------------ */
+
+/* The track behind the header player. */
+const PLAYLIST_VIDEO_ID = 'fv4elyxEnmA';
+
+/* 2πr for the progress ring, r = 20 in the button's 44-unit viewBox. */
+const RING_LENGTH = 2 * Math.PI * 20;
+
+function chromeHTML() {
+  return `<header class="site-header">
     <a class="brand" href="#">
       <span class="brand-tile" aria-hidden="true"><span>₦</span></span>
       <span class="brand-name">The Money Of Nigeria</span>
     </a>
-    <nav class="site-nav" id="site-nav">
-      <a class="nav-playlist" href="#">
-        <span class="icon-pill" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-               stroke-linecap="round" stroke-linejoin="round">
+    <nav class="site-nav">
+      <button class="player-btn" id="player-btn" type="button"
+              data-playing="false" data-loading="true"
+              aria-label="Play the money playlist">
+        <svg class="player-ring" viewBox="0 0 44 44" aria-hidden="true">
+          <circle class="ring-track" cx="22" cy="22" r="20"></circle>
+          <circle class="ring-progress" id="ring-progress" cx="22" cy="22" r="20"></circle>
+        </svg>
+        <span class="player-icon" aria-hidden="true">
+          <svg class="icon-volume" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 10v4a1 1 0 0 0 1 1h2.5l4 3.2A.5.5 0 0 0 11 17.8V6.2a.5.5 0 0 0-.8-.4L6.2 9H4a1 1 0 0 0-1 1Z"/>
             <path d="M15.5 8.5a5 5 0 0 1 0 7"/>
             <path d="M18.5 5.5a9 9 0 0 1 0 13"/>
           </svg>
-        </span>Money playlist
-      </a>
+          <svg class="icon-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round">
+            <path d="M9 5v14"/><path d="M15 5v14"/>
+          </svg>
+        </span>
+      </button>
+      <a href="#">Money playlist</a>
       <a href="#">About</a>
     </nav>
-    <button class="nav-toggle" id="nav-toggle" type="button"
-            aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
-      <span class="bar" aria-hidden="true"></span>
-      <span class="bar" aria-hidden="true"></span>
-      <span class="bar" aria-hidden="true"></span>
-    </button>
-  </header>`;
+  </header>
+  <div class="yt-audio"><div id="yt-audio"></div></div>`;
 }
 
-function bindHeader() {
-  const header = document.getElementById('site-header');
-  const toggle = document.getElementById('nav-toggle');
-  const nav = document.getElementById('site-nav');
-  if (!header || !toggle || !nav) return;
+/* --- Playlist player ---------------------------------------------
+   A hidden YouTube iframe supplies the audio; the visible control is
+   our own button, and the ring around it tracks playback position. */
 
-  const setOpen = open => {
-    header.dataset.navOpen = String(open);
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    document.documentElement.classList.toggle('nav-locked', open);
+let ytPlayer = null;
+let ytReady = false;
+let ringTimer = null;
+
+function setRing(fraction) {
+  const ring = document.getElementById('ring-progress');
+  if (!ring) return;
+  const f = Math.min(Math.max(fraction || 0, 0), 1);
+  ring.style.strokeDashoffset = String(RING_LENGTH * (1 - f));
+  /* A round cap still paints a dot at zero length, so hide the arc
+     entirely until there is actually some progress to show. */
+  ring.style.opacity = f > 0.001 ? '1' : '0';
+}
+
+function setPlaying(playing) {
+  const btn = document.getElementById('player-btn');
+  if (!btn) return;
+  btn.dataset.playing = String(playing);
+  btn.setAttribute('aria-label',
+    playing ? 'Pause the money playlist' : 'Play the money playlist');
+}
+
+function trackRing() {
+  clearInterval(ringTimer);
+  ringTimer = setInterval(() => {
+    if (!ytPlayer || typeof ytPlayer.getDuration !== 'function') return;
+    const total = ytPlayer.getDuration();
+    if (total > 0) setRing(ytPlayer.getCurrentTime() / total);
+  }, 250);
+}
+
+function stopTrackingRing() {
+  clearInterval(ringTimer);
+  ringTimer = null;
+}
+
+/* Loaded on boot rather than on click: the API is async, and calling
+   playVideo() after an await would fall outside the user gesture that
+   browsers require before audio may start. */
+function mountPlayer() {
+  if (document.getElementById('yt-api')) return;
+  window.onYouTubeIframeAPIReady = () => {
+    ytPlayer = new YT.Player('yt-audio', {
+      videoId: PLAYLIST_VIDEO_ID,
+      playerVars: { controls: 0, disablekb: 1, playsinline: 1, rel: 0 },
+      events: {
+        onReady: () => {
+          ytReady = true;
+          const btn = document.getElementById('player-btn');
+          if (btn) btn.dataset.loading = 'false';
+        },
+        onStateChange: e => {
+          if (e.data === YT.PlayerState.PLAYING) { setPlaying(true); trackRing(); }
+          else if (e.data === YT.PlayerState.ENDED) {
+            setPlaying(false); stopTrackingRing(); setRing(0);
+          } else { setPlaying(false); stopTrackingRing(); }
+        }
+      }
+    });
   };
+  const s = document.createElement('script');
+  s.id = 'yt-api';
+  s.src = 'https://www.youtube.com/iframe_api';
+  document.head.append(s);
+}
 
-  toggle.addEventListener('click', () => {
-    setOpen(header.dataset.navOpen !== 'true');
+function renderChrome() {
+  const chrome = document.getElementById('chrome');
+  if (!chrome) return;
+  chrome.innerHTML = chromeHTML();
+  setRing(0);
+
+  document.getElementById('player-btn').addEventListener('click', () => {
+    if (!ytReady || !ytPlayer) return;
+    if (ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) ytPlayer.pauseVideo();
+    else ytPlayer.playVideo();
   });
 
-  /* Any navigation out of the panel closes it. */
-  nav.addEventListener('click', e => {
-    if (e.target.closest('a')) setOpen(false);
-  });
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && header.dataset.navOpen === 'true') {
-      setOpen(false);
-      toggle.focus();
-    }
-  });
+  mountPlayer();
 }
 
 function footerHTML(meta) {
@@ -271,7 +342,6 @@ function renderCatalog() {
   const sorts = [['currency', 'Currency'], ['year', 'Year'], ['era', 'Era']];
 
   app.innerHTML = `
-    ${headerHTML()}
     <header class="hero">
       <h1 class="site-title">${esc(SITE_TITLE)}</h1>
       <p class="site-desc">${esc(oneLiner)}</p>
@@ -303,7 +373,6 @@ function renderCatalog() {
     updateView();
   });
 
-  bindHeader();
   updateView();
   window.scrollTo(0, 0);
 }
@@ -394,7 +463,6 @@ function renderDetail(slug) {
     .join('');
 
   app.innerHTML = `
-    ${headerHTML()}
     <header class="detail-hero">
       <a class="back-link" href="#">← ${esc(SITE_TITLE)}</a>
       ${plateHTML(c, coverImage(c), 'detail-cover')}
@@ -416,7 +484,6 @@ function renderDetail(slug) {
       </a>
     </footer>`;
 
-  bindHeader();
   window.scrollTo(0, 0);
 }
 
@@ -440,6 +507,7 @@ fetch(DATA_URL)
   })
   .then(data => {
     state.data = data;
+    renderChrome();
     route();
   })
   .catch(err => {
