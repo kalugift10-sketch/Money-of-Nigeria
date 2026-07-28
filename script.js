@@ -224,7 +224,8 @@ function chromeHTML() {
       <a href="#">About</a>
     </nav>
   </header>
-  <audio id="playlist-audio" preload="metadata" src="${PLAYLIST.src}"></audio>`;
+  <audio id="playlist-audio" preload="metadata"></audio>
+  <div class="yt-audio"><div id="yt-audio"></div></div>`;
 }
 
 /* --- Playlist player ---------------------------------------------
