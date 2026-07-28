@@ -5,20 +5,89 @@
    and grey-100 plates, not borders.
 ------------------------------------------------------------------- */
 
+/* ==================================================================
+   DESIGN SYSTEM — tokens
+   Source of truth: Figma "Content page / Tradebybarter" (node 30:630).
+   Full documentation and usage rules: DESIGN-SYSTEM.md
+   Nothing below this block should hard-code a colour or a font size.
+================================================================== */
+
 :root {
-  --bg: #FFFFFF;
-  --ink: #0A0A0A;
+  /* --- Brand greens -------------------------------------------
+     Not one ramp: the mark green is a warmer, darker leaf green;
+     the surface greens are emerald. Kept as distinct roles. */
+  --brand-mark:     #1A6514;  /* logo tile only */
+  --brand-on-mark:  #F3FDF2;  /* the ₦ sitting on that tile */
+  --brand:          #008D51;  /* primary brand fill — footer, brand surfaces */
+  --brand-deep:     #00864D;  /* duotone ground behind hero imagery */
+  --brand-tint:     #F8FDF7;  /* faintest green — icon pills, hover beds */
+
+  /* --- Ink ---------------------------------------------------- */
+  --ink:            #040404;  /* headings and body */
+  --ink-muted:      #6B7280;  /* meta lines, back/next links, captions */
+  --ink-on-dark:    #FFFFFF;  /* type over imagery or brand fills */
+
+  /* --- Surface and line --------------------------------------- */
+  --bg:             #FFFFFF;
+  --surface-sunken: #F9FAFB;
+  --line:           #E5E7EB;
+  --line-hair:      #6D6D6D;  /* only ever at 0.25px — header rule */
+
+  /* --- Status chip (from Figma semantic/neutral/*) ------------- */
+  --chip-bg:        #F9FAFB;
+  --chip-line:      #E5E7EB;
+  --chip-ink:       #374151;
+
+  /* --- Scrim over full-bleed photography ---------------------- */
+  --scrim: linear-gradient(180deg, rgba(102, 102, 102, 0) 0%, #000 100%);
+
+  /* --- Typefaces ---------------------------------------------- */
+  --font-display: "Stack Sans Headline", "Helvetica Neue", Arial, sans-serif;
+  --font-mark:    "Libre Caslon Text", Georgia, serif; /* the ₦ glyph only */
+
+  --w-extralight: 200;
+  --w-light:      300;
+  --w-regular:    400;
+  --w-medium:     500;
+
+  /* --- Type scale ---------------------------------------------
+     Every clamp runs 360px → 1440px viewport. Display sizes scale
+     down on mobile; 16/14/12 never do — that's the legibility floor. */
+  --text-display: clamp(2rem,     1.5rem  + 2.22vw, 3.5rem);  /* 32 → 56 */
+  --text-year:    clamp(2.5rem,   2.17rem + 1.48vw, 3.5rem);  /* 40 → 56 */
+  --text-title:   clamp(1.25rem,  1.17rem + 0.37vw, 1.5rem);  /* 20 → 24 */
+  --text-lead:    clamp(1.125rem, 1.08rem + 0.19vw, 1.25rem); /* 18 → 20 */
+  --text-body:    1rem;       /* 16 — fixed */
+  --text-meta:    0.875rem;   /* 14 — fixed */
+  --text-caption: 0.75rem;    /* 12 — fixed */
+
+  --leading-tight:   1;
+  --leading-body:    1.2;
+  --leading-caption: 1.5;
+  --track-body:      0.01em;
+
+  /* --- Layout -------------------------------------------------- */
+  --pad:       clamp(1.25rem, 4vw, 2.5rem);   /* page gutter — 40 at desktop */
+  --pad-slide: clamp(1.5rem, 5.5vw, 5rem);    /* slide inset — 80 at desktop */
+  --max: 90rem;                               /* 1440 */
+  --header-h: 4.5rem;
+
+  --r-tile: 8px;
+  --r-chip: 20px;
+  --r-pill: 999px;
+
+  /* --- Legacy aliases -----------------------------------------
+     The catalog was built on a white/black/grey scale. These keep
+     it rendering while it is migrated onto the tokens above. */
   --grey-900: #1A1A1A;
-  --grey-600: #5C5C5C;
+  --grey-600: var(--ink-muted);
   --grey-400: #9B9B9B;
-  --grey-200: #E5E5E5;
-  --grey-100: #F5F5F5;
-
-  --serif: "Fraunces", Georgia, serif;
-  --sans: "Satoshi", "Helvetica Neue", Arial, sans-serif;
-
-  --pad: clamp(1.25rem, 4vw, 4rem);
-  --max: 84rem;
+  --grey-200: var(--line);
+  --grey-100: var(--surface-sunken);
+  /* Both map to the display face on purpose: the design sets titles, years
+     and body in Stack Sans. Caslon is the logo glyph only — never text. */
+  --serif: var(--font-display);
+  --sans:  var(--font-display);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,6 +112,164 @@ body {
 a { color: inherit; }
 img { max-width: 100%; display: block; }
 button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+
+/* ---------------------------------------------------------------
+   Site header — logo, desktop nav, mobile hamburger
+--------------------------------------------------------------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: var(--header-h);
+  padding: 1.5rem var(--pad);
+  background: var(--bg);
+  border-bottom: 0.25px solid var(--line-hair);
+}
+
+.brand { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+
+.brand-tile {
+  display: grid;
+  place-items: center;
+  padding: 0.125rem 0.75rem;
+  border-radius: var(--r-tile);
+  background: var(--brand-mark);
+}
+
+/* The tile stays upright; only the glyph tilts. */
+.brand-tile span {
+  display: block;
+  transform: rotate(-9.84deg);
+  color: var(--brand-on-mark);
+  font-family: var(--font-mark);
+  font-weight: 700;
+  font-size: 1.75rem;
+  line-height: 2rem;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: var(--w-regular);
+  font-size: var(--text-lead);
+  line-height: 2.5rem;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.site-nav { display: flex; align-items: center; gap: 1rem; }
+
+.site-nav a {
+  font-size: var(--text-meta);
+  font-weight: var(--w-light);
+  line-height: var(--leading-tight);
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav-playlist { display: inline-flex; align-items: center; gap: 0.5rem; }
+
+.icon-pill {
+  display: grid;
+  place-items: center;
+  padding: 0.5rem;
+  border-radius: var(--r-pill);
+  background: var(--brand-tint);
+}
+
+.icon-pill svg { display: block; width: 1rem; height: 1rem; }
+
+.nav-toggle {
+  display: none;
+  position: relative;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-right: -0.625rem;
+}
+
+/* Bars are absolutely centred so the open state crosses cleanly at the
+   middle. Stacking them in flow makes the two diagonals meet at an end
+   and read as a chevron instead of an X. */
+.nav-toggle .bar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.375rem;
+  height: 2px;
+  margin: -1px 0 0 -0.6875rem;
+  border-radius: 2px;
+  background: var(--ink);
+  transition: transform 240ms ease, opacity 160ms ease;
+}
+
+.nav-toggle .bar:nth-child(1) { transform: translateY(-7px); }
+.nav-toggle .bar:nth-child(3) { transform: translateY(7px); }
+
+.brand:focus-visible,
+.site-nav a:focus-visible,
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (max-width: 47.9375em) {
+  .nav-toggle { display: block; }
+
+  .site-nav {
+    position: fixed;
+    inset: var(--header-h) 0 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 1.5rem var(--pad) 3rem;
+    background: var(--bg);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    transition: opacity 220ms ease, transform 220ms ease, visibility 0s linear 220ms;
+  }
+
+  .site-header[data-nav-open="true"] .site-nav {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition-delay: 0s;
+  }
+
+  .site-nav a {
+    padding: 1.125rem 0;
+    font-size: var(--text-title);
+    font-weight: var(--w-regular);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .site-header[data-nav-open="true"] .site-nav a { animation: nav-item-in 260ms ease both; }
+  .site-header[data-nav-open="true"] .site-nav a:nth-child(1) { animation-delay: 60ms; }
+  .site-header[data-nav-open="true"] .site-nav a:nth-child(2) { animation-delay: 120ms; }
+
+  .site-header[data-nav-open="true"] .bar:nth-child(1) { transform: rotate(45deg); }
+  .site-header[data-nav-open="true"] .bar:nth-child(2) { opacity: 0; }
+  .site-header[data-nav-open="true"] .bar:nth-child(3) { transform: rotate(-45deg); }
+}
+
+@keyframes nav-item-in {
+  from { opacity: 0; transform: translateY(0.5rem); }
+  to   { opacity: 1; transform: none; }
+}
+
+html.nav-locked { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-nav,
+  .nav-toggle .bar { transition-duration: 1ms; }
+  .site-header[data-nav-open="true"] .site-nav a { animation: none; }
+}
 
 /* ---------------------------------------------------------------
    Hero / catalog shell

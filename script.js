@@ -182,6 +182,65 @@ function updateView() {
     : currencyViewHTML(q);
 }
 
+/* Site chrome. Rendered at the top of both the catalog and detail views. */
+function headerHTML() {
+  return `<header class="site-header" id="site-header" data-nav-open="false">
+    <a class="brand" href="#">
+      <span class="brand-tile" aria-hidden="true"><span>₦</span></span>
+      <span class="brand-name">The Money Of Nigeria</span>
+    </a>
+    <nav class="site-nav" id="site-nav">
+      <a class="nav-playlist" href="#">
+        <span class="icon-pill" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 10v4a1 1 0 0 0 1 1h2.5l4 3.2A.5.5 0 0 0 11 17.8V6.2a.5.5 0 0 0-.8-.4L6.2 9H4a1 1 0 0 0-1 1Z"/>
+            <path d="M15.5 8.5a5 5 0 0 1 0 7"/>
+            <path d="M18.5 5.5a9 9 0 0 1 0 13"/>
+          </svg>
+        </span>Money playlist
+      </a>
+      <a href="#">About</a>
+    </nav>
+    <button class="nav-toggle" id="nav-toggle" type="button"
+            aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+      <span class="bar" aria-hidden="true"></span>
+      <span class="bar" aria-hidden="true"></span>
+      <span class="bar" aria-hidden="true"></span>
+    </button>
+  </header>`;
+}
+
+function bindHeader() {
+  const header = document.getElementById('site-header');
+  const toggle = document.getElementById('nav-toggle');
+  const nav = document.getElementById('site-nav');
+  if (!header || !toggle || !nav) return;
+
+  const setOpen = open => {
+    header.dataset.navOpen = String(open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    document.documentElement.classList.toggle('nav-locked', open);
+  };
+
+  toggle.addEventListener('click', () => {
+    setOpen(header.dataset.navOpen !== 'true');
+  });
+
+  /* Any navigation out of the panel closes it. */
+  nav.addEventListener('click', e => {
+    if (e.target.closest('a')) setOpen(false);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && header.dataset.navOpen === 'true') {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+}
+
 function footerHTML(meta) {
   const sources = (meta.primary_sources || []).map(url =>
     `<li><a href="${esc(url)}" target="_blank" rel="noopener">${esc(hostname(url))}</a></li>`
@@ -212,6 +271,7 @@ function renderCatalog() {
   const sorts = [['currency', 'Currency'], ['year', 'Year'], ['era', 'Era']];
 
   app.innerHTML = `
+    ${headerHTML()}
     <header class="hero">
       <h1 class="site-title">${esc(SITE_TITLE)}</h1>
       <p class="site-desc">${esc(oneLiner)}</p>
@@ -243,6 +303,7 @@ function renderCatalog() {
     updateView();
   });
 
+  bindHeader();
   updateView();
   window.scrollTo(0, 0);
 }
@@ -333,6 +394,7 @@ function renderDetail(slug) {
     .join('');
 
   app.innerHTML = `
+    ${headerHTML()}
     <header class="detail-hero">
       <a class="back-link" href="#">← ${esc(SITE_TITLE)}</a>
       ${plateHTML(c, coverImage(c), 'detail-cover')}
@@ -354,6 +416,7 @@ function renderDetail(slug) {
       </a>
     </footer>`;
 
+  bindHeader();
   window.scrollTo(0, 0);
 }
 
