@@ -190,8 +190,10 @@ function updateView() {
 /* The track behind the header player. */
 const PLAYLIST_VIDEO_ID = 'fv4elyxEnmA';
 
-/* 2πr for the progress ring, r = 20 in the button's 44-unit viewBox. */
-const RING_LENGTH = 2 * Math.PI * 20;
+const PLAYLIST_URL = `https://youtu.be/${PLAYLIST_VIDEO_ID}`;
+
+/* 2πr for the progress ring, r = 15 in the button's 32-unit viewBox. */
+const RING_LENGTH = 2 * Math.PI * 15;
 
 function chromeHTML() {
   return `<header class="site-header">
@@ -203,20 +205,20 @@ function chromeHTML() {
       <button class="player-btn" id="player-btn" type="button"
               data-playing="false" data-loading="true"
               aria-label="Play the money playlist">
-        <svg class="player-ring" viewBox="0 0 44 44" aria-hidden="true">
-          <circle class="ring-track" cx="22" cy="22" r="20"></circle>
-          <circle class="ring-progress" id="ring-progress" cx="22" cy="22" r="20"></circle>
+        <svg class="player-ring" viewBox="0 0 32 32" aria-hidden="true">
+          <circle class="ring-track" cx="16" cy="16" r="15"></circle>
+          <circle class="ring-progress" id="ring-progress" cx="16" cy="16" r="15"></circle>
         </svg>
         <span class="player-icon" aria-hidden="true">
-          <svg class="icon-volume" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 10v4a1 1 0 0 0 1 1h2.5l4 3.2A.5.5 0 0 0 11 17.8V6.2a.5.5 0 0 0-.8-.4L6.2 9H4a1 1 0 0 0-1 1Z"/>
-            <path d="M15.5 8.5a5 5 0 0 1 0 7"/>
-            <path d="M18.5 5.5a9 9 0 0 1 0 13"/>
+          <!-- Hugeicons free (MIT): volume-high and pause -->
+          <svg class="icon-volume" viewBox="0 0 24 24" fill="none">
+            <path d="M14 14.8135V9.18646C14 6.04126 14 4.46866 13.0747 4.0773C12.1494 3.68593 11.0603 4.79793 8.88232 7.02192C7.75439 8.17365 7.11085 8.42869 5.50604 8.42869C4.10257 8.42869 3.40084 8.42869 2.89675 8.77262C1.85035 9.48655 2.00852 10.882 2.00852 12C2.00852 13.118 1.85035 14.5134 2.89675 15.2274C3.40084 15.5713 4.10257 15.5713 5.50604 15.5713C7.11085 15.5713 7.75439 15.8264 8.88232 16.9781C11.0603 19.2021 12.1494 20.3141 13.0747 19.9227C14 19.5313 14 17.9587 14 14.8135Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+            <path d="M17 9C17.6254 9.81968 18 10.8634 18 12C18 13.1366 17.6254 14.1803 17 15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+            <path d="M20 7C21.2508 8.36613 22 10.1057 22 12C22 13.8943 21.2508 15.6339 20 17" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
           </svg>
-          <svg class="icon-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round">
-            <path d="M9 5v14"/><path d="M15 5v14"/>
+          <svg class="icon-pause" viewBox="0 0 24 24" fill="none">
+            <path d="M4 7C4 5.58579 4 4.87868 4.43934 4.43934C4.87868 4 5.58579 4 7 4C8.41421 4 9.12132 4 9.56066 4.43934C10 4.87868 10 5.58579 10 7V17C10 18.4142 10 19.1213 9.56066 19.5607C9.12132 20 8.41421 20 7 20C5.58579 20 4.87868 20 4.43934 19.5607C4 19.1213 4 18.4142 4 17V7Z" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M14 7C14 5.58579 14 4.87868 14.4393 4.43934C14.8787 4 15.5858 4 17 4C18.4142 4 19.1213 4 19.5607 4.43934C20 4.87868 20 5.58579 20 7V17C20 18.4142 20 19.1213 19.5607 19.5607C19.1213 20 18.4142 20 17 20C15.5858 20 14.8787 20 14.4393 19.5607C14 19.1213 14 18.4142 14 17V7Z" stroke="currentColor" stroke-width="1.5"/>
           </svg>
         </span>
       </button>
@@ -270,18 +272,40 @@ function stopTrackingRing() {
 /* Loaded on boot rather than on click: the API is async, and calling
    playVideo() after an await would fall outside the user gesture that
    browsers require before audio may start. */
+/* The player cannot complete its postMessage handshake from a file://
+   page — the origin is "null" and onReady never fires. Rather than
+   leave a dead button, fall back to opening the track on YouTube. */
+function failToLink(reason) {
+  if (ytReady) return;
+  const btn = document.getElementById('player-btn');
+  if (!btn) return;
+  btn.dataset.loading = 'false';
+  btn.dataset.error = 'true';
+  btn.setAttribute('aria-label', 'Open the money playlist on YouTube');
+  btn.title = `In-page audio unavailable (${reason}). Opens on YouTube instead.`;
+}
+
 function mountPlayer() {
   if (document.getElementById('yt-api')) return;
+
+  const playerVars = { controls: 0, disablekb: 1, playsinline: 1, rel: 0 };
+  /* Supplying the origin is what lets the API bridge verify messages;
+     it only exists on a served page, not on file://. */
+  if (location.protocol === 'http:' || location.protocol === 'https:') {
+    playerVars.origin = location.origin;
+  }
+
   window.onYouTubeIframeAPIReady = () => {
     ytPlayer = new YT.Player('yt-audio', {
       videoId: PLAYLIST_VIDEO_ID,
-      playerVars: { controls: 0, disablekb: 1, playsinline: 1, rel: 0 },
+      playerVars,
       events: {
         onReady: () => {
           ytReady = true;
           const btn = document.getElementById('player-btn');
-          if (btn) btn.dataset.loading = 'false';
+          if (btn) { btn.dataset.loading = 'false'; btn.dataset.error = 'false'; }
         },
+        onError: () => failToLink('playback blocked'),
         onStateChange: e => {
           if (e.data === YT.PlayerState.PLAYING) { setPlaying(true); trackRing(); }
           else if (e.data === YT.PlayerState.ENDED) {
@@ -294,7 +318,10 @@ function mountPlayer() {
   const s = document.createElement('script');
   s.id = 'yt-api';
   s.src = 'https://www.youtube.com/iframe_api';
+  s.onerror = () => failToLink('script blocked');
   document.head.append(s);
+
+  setTimeout(() => failToLink('player did not load'), 6000);
 }
 
 function renderChrome() {
@@ -303,7 +330,11 @@ function renderChrome() {
   chrome.innerHTML = chromeHTML();
   setRing(0);
 
-  document.getElementById('player-btn').addEventListener('click', () => {
+  document.getElementById('player-btn').addEventListener('click', e => {
+    if (e.currentTarget.dataset.error === 'true') {
+      window.open(PLAYLIST_URL, '_blank', 'noopener');
+      return;
+    }
     if (!ytReady || !ytPlayer) return;
     if (ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) ytPlayer.pauseVideo();
     else ytPlayer.playVideo();

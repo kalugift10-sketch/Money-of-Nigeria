@@ -191,15 +191,16 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 }
 
 /* --- Money playlist player -------------------------------------
-   The green ring is the progress indicator: it draws clockwise from
-   12 o'clock as the track plays. r=20 in a 44 viewBox, so the 2px
-   stroke sits inside the 44px button without clipping. */
+   32px overall, matching the Figma pill: a 16px icon with 8px of
+   padding. The green ring is the pill's own border, drawn clockwise
+   from 12 o'clock as the track plays — r=15 in a 32 viewBox puts the
+   2px stroke exactly on the edge. */
 .player-btn {
   position: relative;
   display: grid;
   place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: var(--r-pill);
   background: var(--brand-tint);
   color: var(--ink);
@@ -225,8 +226,8 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   stroke: var(--brand);
   stroke-width: 2;
   stroke-linecap: round;
-  stroke-dasharray: 125.664;      /* 2πr, r = 20 */
-  stroke-dashoffset: 125.664;     /* fully empty */
+  stroke-dasharray: 94.248;       /* 2πr, r = 15 */
+  stroke-dashoffset: 94.248;      /* fully empty */
   transition: stroke-dashoffset 200ms linear;
 }
 
