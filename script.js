@@ -187,10 +187,8 @@ function updateView() {
    playlist survives navigation between pages.
 ------------------------------------------------------------------ */
 
-/* The track behind the header player. */
+/* Where the track is linked if no audio file is present. */
 const PLAYLIST_VIDEO_ID = 'fv4elyxEnmA';
-
-const PLAYLIST_URL = `https://youtu.be/${PLAYLIST_VIDEO_ID}`;
 
 /* 2πr for the progress ring, r = 15 in the button's 32-unit viewBox. */
 const RING_LENGTH = 2 * Math.PI * 15;
@@ -226,16 +224,21 @@ function chromeHTML() {
       <a href="#">About</a>
     </nav>
   </header>
-  <div class="yt-audio"><div id="yt-audio"></div></div>`;
+  <audio id="playlist-audio" preload="metadata" src="${PLAYLIST.src}"></audio>`;
 }
 
 /* --- Playlist player ---------------------------------------------
-   A hidden YouTube iframe supplies the audio; the visible control is
-   our own button, and the ring around it tracks playback position. */
+   A native <audio> element. No third-party iframe: nothing to block,
+   no origin handshake, and it works from a plain file too. Drop the
+   track at PLAYLIST.src and the ring follows it. */
 
-let ytPlayer = null;
-let ytReady = false;
-let ringTimer = null;
+const PLAYLIST = {
+  src: 'audio/money-playlist.mp3',
+  /* Shown if the audio file is missing or cannot be decoded. */
+  fallbackUrl: `https://youtu.be/${PLAYLIST_VIDEO_ID}`
+};
+
+let audioEl = null;
 
 function setRing(fraction) {
   const ring = document.getElementById('ring-progress');
@@ -255,73 +258,41 @@ function setPlaying(playing) {
     playing ? 'Pause the money playlist' : 'Play the money playlist');
 }
 
-function trackRing() {
-  clearInterval(ringTimer);
-  ringTimer = setInterval(() => {
-    if (!ytPlayer || typeof ytPlayer.getDuration !== 'function') return;
-    const total = ytPlayer.getDuration();
-    if (total > 0) setRing(ytPlayer.getCurrentTime() / total);
-  }, 250);
-}
-
-function stopTrackingRing() {
-  clearInterval(ringTimer);
-  ringTimer = null;
-}
-
-/* Loaded on boot rather than on click: the API is async, and calling
-   playVideo() after an await would fall outside the user gesture that
-   browsers require before audio may start. */
-/* The player cannot complete its postMessage handshake from a file://
-   page — the origin is "null" and onReady never fires. Rather than
-   leave a dead button, fall back to opening the track on YouTube. */
+/* No track available: keep the control useful rather than dead. */
 function failToLink(reason) {
-  if (ytReady) return;
   const btn = document.getElementById('player-btn');
   if (!btn) return;
   btn.dataset.loading = 'false';
   btn.dataset.error = 'true';
-  btn.setAttribute('aria-label', 'Open the money playlist on YouTube');
-  btn.title = `In-page audio unavailable (${reason}). Opens on YouTube instead.`;
+  btn.setAttribute('aria-label', 'Open the money playlist');
+  btn.title = `No audio file loaded (${reason}).`;
 }
 
-function mountPlayer() {
-  if (document.getElementById('yt-api')) return;
+function bindPlayer() {
+  audioEl = document.getElementById('playlist-audio');
+  const btn = document.getElementById('player-btn');
+  if (!audioEl || !btn) return;
 
-  const playerVars = { controls: 0, disablekb: 1, playsinline: 1, rel: 0 };
-  /* Supplying the origin is what lets the API bridge verify messages;
-     it only exists on a served page, not on file://. */
-  if (location.protocol === 'http:' || location.protocol === 'https:') {
-    playerVars.origin = location.origin;
-  }
+  audioEl.addEventListener('loadedmetadata', () => {
+    btn.dataset.loading = 'false';
+    btn.dataset.error = 'false';
+  });
+  audioEl.addEventListener('timeupdate', () => {
+    if (audioEl.duration > 0) setRing(audioEl.currentTime / audioEl.duration);
+  });
+  audioEl.addEventListener('play', () => setPlaying(true));
+  audioEl.addEventListener('pause', () => setPlaying(false));
+  audioEl.addEventListener('ended', () => { setPlaying(false); setRing(0); });
+  audioEl.addEventListener('error', () => failToLink('file missing'));
 
-  window.onYouTubeIframeAPIReady = () => {
-    ytPlayer = new YT.Player('yt-audio', {
-      videoId: PLAYLIST_VIDEO_ID,
-      playerVars,
-      events: {
-        onReady: () => {
-          ytReady = true;
-          const btn = document.getElementById('player-btn');
-          if (btn) { btn.dataset.loading = 'false'; btn.dataset.error = 'false'; }
-        },
-        onError: () => failToLink('playback blocked'),
-        onStateChange: e => {
-          if (e.data === YT.PlayerState.PLAYING) { setPlaying(true); trackRing(); }
-          else if (e.data === YT.PlayerState.ENDED) {
-            setPlaying(false); stopTrackingRing(); setRing(0);
-          } else { setPlaying(false); stopTrackingRing(); }
-        }
-      }
-    });
-  };
-  const s = document.createElement('script');
-  s.id = 'yt-api';
-  s.src = 'https://www.youtube.com/iframe_api';
-  s.onerror = () => failToLink('script blocked');
-  document.head.append(s);
-
-  setTimeout(() => failToLink('player did not load'), 6000);
+  btn.addEventListener('click', () => {
+    if (btn.dataset.error === 'true') {
+      window.open(PLAYLIST.fallbackUrl, '_blank', 'noopener');
+      return;
+    }
+    if (audioEl.paused) audioEl.play().catch(() => failToLink('playback refused'));
+    else audioEl.pause();
+  });
 }
 
 function renderChrome() {
@@ -330,17 +301,7 @@ function renderChrome() {
   chrome.innerHTML = chromeHTML();
   setRing(0);
 
-  document.getElementById('player-btn').addEventListener('click', e => {
-    if (e.currentTarget.dataset.error === 'true') {
-      window.open(PLAYLIST_URL, '_blank', 'noopener');
-      return;
-    }
-    if (!ytReady || !ytPlayer) return;
-    if (ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) ytPlayer.pauseVideo();
-    else ytPlayer.playVideo();
-  });
-
-  mountPlayer();
+  bindPlayer();
 }
 
 function footerHTML(meta) {
