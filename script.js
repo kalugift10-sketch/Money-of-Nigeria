@@ -228,17 +228,30 @@ function chromeHTML() {
 }
 
 /* --- Playlist player ---------------------------------------------
-   A native <audio> element. No third-party iframe: nothing to block,
-   no origin handshake, and it works from a plain file too. Drop the
-   track at PLAYLIST.src and the ring follows it. */
+   Two possible sources, same button and same ring.
+
+   'youtube' streams through the official embed API. For a commercial
+   track that is the licensed way to play it — the platform carries the
+   rights — and the API still exposes position, so our own ring works.
+   It needs a served page: from a file:// URL the API cannot verify its
+   postMessage handshake and never signals ready.
+
+   'file' plays audio/… instead, for when you hold a licensed copy.
+   That one works anywhere, including from a plain file. */
 
 const PLAYLIST = {
+  source: 'youtube',                       // 'youtube' | 'file'
+  videoId: 'fv4elyxEnmA',
   src: 'audio/money-playlist.mp3',
-  /* Shown if the audio file is missing or cannot be decoded. */
-  fallbackUrl: `https://youtu.be/${PLAYLIST_VIDEO_ID}`
+  title: 'Billionaire — Stanley Okorie'
 };
 
+PLAYLIST.url = `https://youtu.be/${PLAYLIST.videoId}`;
+
 let audioEl = null;
+let ytPlayer = null;
+let ytReady = false;
+let ringTimer = null;
 
 function setRing(fraction) {
   const ring = document.getElementById('ring-progress');
@@ -254,29 +267,33 @@ function setPlaying(playing) {
   const btn = document.getElementById('player-btn');
   if (!btn) return;
   btn.dataset.playing = String(playing);
-  btn.setAttribute('aria-label',
-    playing ? 'Pause the money playlist' : 'Play the money playlist');
+  btn.setAttribute('aria-label', `${playing ? 'Pause' : 'Play'} ${PLAYLIST.title}`);
 }
 
-/* No track available: keep the control useful rather than dead. */
+function setReady() {
+  const btn = document.getElementById('player-btn');
+  if (btn) { btn.dataset.loading = 'false'; btn.dataset.error = 'false'; }
+}
+
+/* Never leave a dead control: fall back to opening the track. */
 function failToLink(reason) {
+  if (ytReady) return;
   const btn = document.getElementById('player-btn');
   if (!btn) return;
   btn.dataset.loading = 'false';
   btn.dataset.error = 'true';
-  btn.setAttribute('aria-label', 'Open the money playlist');
-  btn.title = `No audio file loaded (${reason}).`;
+  btn.setAttribute('aria-label', `Open ${PLAYLIST.title}`);
+  btn.title = `In-page audio unavailable (${reason}). Opens the track instead.`;
 }
 
-function bindPlayer() {
-  audioEl = document.getElementById('playlist-audio');
-  const btn = document.getElementById('player-btn');
-  if (!audioEl || !btn) return;
+/* --- file source ------------------------------------------------- */
 
-  audioEl.addEventListener('loadedmetadata', () => {
-    btn.dataset.loading = 'false';
-    btn.dataset.error = 'false';
-  });
+function bindFileSource(btn) {
+  audioEl = document.getElementById('playlist-audio');
+  if (!audioEl) return;
+  audioEl.src = PLAYLIST.src;
+
+  audioEl.addEventListener('loadedmetadata', setReady);
   audioEl.addEventListener('timeupdate', () => {
     if (audioEl.duration > 0) setRing(audioEl.currentTime / audioEl.duration);
   });
@@ -286,13 +303,72 @@ function bindPlayer() {
   audioEl.addEventListener('error', () => failToLink('file missing'));
 
   btn.addEventListener('click', () => {
-    if (btn.dataset.error === 'true') {
-      window.open(PLAYLIST.fallbackUrl, '_blank', 'noopener');
-      return;
-    }
+    if (btn.dataset.error === 'true') return openTrack();
     if (audioEl.paused) audioEl.play().catch(() => failToLink('playback refused'));
     else audioEl.pause();
   });
+}
+
+/* --- youtube source ---------------------------------------------- */
+
+function trackRing() {
+  clearInterval(ringTimer);
+  ringTimer = setInterval(() => {
+    if (!ytPlayer || typeof ytPlayer.getDuration !== 'function') return;
+    const total = ytPlayer.getDuration();
+    if (total > 0) setRing(ytPlayer.getCurrentTime() / total);
+  }, 250);
+}
+
+function bindYouTubeSource(btn) {
+  const vars = { controls: 0, disablekb: 1, playsinline: 1, rel: 0 };
+  if (location.protocol === 'http:' || location.protocol === 'https:') {
+    vars.origin = location.origin;
+  }
+
+  window.onYouTubeIframeAPIReady = () => {
+    ytPlayer = new YT.Player('yt-audio', {
+      videoId: PLAYLIST.videoId,
+      playerVars: vars,
+      events: {
+        onReady: () => { ytReady = true; setReady(); },
+        onError: () => failToLink('track unavailable'),
+        onStateChange: e => {
+          if (e.data === YT.PlayerState.PLAYING) { setPlaying(true); trackRing(); }
+          else if (e.data === YT.PlayerState.ENDED) {
+            setPlaying(false); clearInterval(ringTimer); setRing(0);
+          } else { setPlaying(false); clearInterval(ringTimer); }
+        }
+      }
+    });
+  };
+
+  if (!document.getElementById('yt-api')) {
+    const s = document.createElement('script');
+    s.id = 'yt-api';
+    s.src = 'https://www.youtube.com/iframe_api';
+    s.onerror = () => failToLink('script blocked');
+    document.head.append(s);
+    setTimeout(() => failToLink('needs a served page, not file://'), 6000);
+  }
+
+  btn.addEventListener('click', () => {
+    if (btn.dataset.error === 'true') return openTrack();
+    if (!ytReady || !ytPlayer) return;
+    if (ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) ytPlayer.pauseVideo();
+    else ytPlayer.playVideo();
+  });
+}
+
+function openTrack() {
+  window.open(PLAYLIST.url, '_blank', 'noopener');
+}
+
+function bindPlayer() {
+  const btn = document.getElementById('player-btn');
+  if (!btn) return;
+  if (PLAYLIST.source === 'file') bindFileSource(btn);
+  else bindYouTubeSource(btn);
 }
 
 function renderChrome() {

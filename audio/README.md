@@ -1,12 +1,14 @@
 # Audio
 
-The header player reads one file:
+The player defaults to the official YouTube embed, not this folder —
+see `PLAYLIST.source` in `script.js`.
+
+Set `PLAYLIST.source = 'file'` to play a self-hosted track instead:
 
     audio/money-playlist.mp3
 
-Drop the track there and it plays — the green ring around the button
-follows its position. To use a different filename or format, change
-`PLAYLIST.src` at the top of the player section in `script.js`.
+The green ring follows its position either way. For a different
+filename or format, change `PLAYLIST.src`.
 
 If the file is missing, the button does not break: it labels itself and
 links out to the track instead.

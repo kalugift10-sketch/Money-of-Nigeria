@@ -117,6 +117,12 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
    Site header — logo, desktop nav, mobile hamburger
 --------------------------------------------------------------- */
 
+/* The chrome wrapper must not become the header's containing block —
+   a sticky element can only stick within its parent, and that wrapper
+   is only as tall as the header, so the header would scroll away with
+   it. display:contents removes the wrapper from layout entirely. */
+#chrome { display: contents; }
+
 .site-header {
   position: sticky;
   top: 0;
@@ -239,6 +245,18 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .player-btn[data-playing="true"] .icon-volume { display: none; }
 
 .player-btn[data-loading="true"] { opacity: 0.55; }
+
+/* The iframe is an audio source only; the visible control is the button
+   above. Kept out of flow rather than display:none, which would stop it
+   initialising. */
+.yt-audio {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .player-ring .ring-progress { transition-duration: 1ms; }

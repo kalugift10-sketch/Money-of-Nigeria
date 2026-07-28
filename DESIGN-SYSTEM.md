@@ -116,26 +116,42 @@ Radii: `--r-tile` 8px (logo), `--r-chip` 20px (status chip), `--r-pill` 999px
 
 ## Navigation
 
-**Desktop (≥768px)** — logo left; playlist icon pill, "Money playlist" and
-"About" inline on the right.
+The header is sticky at the top of every page. It renders once into
+`#chrome`, outside `#app`, so the playlist keeps playing across
+navigation instead of restarting. `#chrome` is `display: contents` —
+without that it becomes the header's containing block and the header
+scrolls away with it, since a sticky element can only stick within its
+parent.
 
-**Mobile (<768px)** — the inline nav is replaced by a hamburger button that
-opens a full-width panel below the header. Behaviour:
+Three siblings sit on the right, 16px apart, as in the design file: the
+player button, then "Money playlist", then "About". The player is its
+own control, not part of a link. Links take a 1px black underline at
+4px offset on hover and on keyboard focus.
 
-- Three bars morph into an X — the outer two rotate to meet, the middle fades.
-- Panel fades and slides in; links stagger in at 60ms intervals.
-- `aria-expanded` and `aria-controls` on the button; the label flips between
-  "Open menu" and "Close menu".
-- Escape closes the panel and returns focus to the button.
-- Tapping any link closes the panel.
-- Background scroll is locked while open (`html.nav-locked`).
-- Under `prefers-reduced-motion`, transitions collapse to 1ms and the stagger
-  animation is dropped — the panel still opens, it just doesn't animate.
+**Mobile is not designed yet.** There is deliberately no hamburger or
+mobile nav in the code — the earlier one was invented rather than taken
+from the design file, and has been removed.
 
-State lives in one place: `data-nav-open` on `.site-header`. The CSS keys off
-that attribute; `bindHeader()` in `script.js` is the only thing that sets it.
+### Player
 
----
+A 32px pill (16px icon, 8px padding), with the progress ring drawn on
+the pill's own edge — `r=15` in a 32 viewBox, so the 2px stroke lands
+exactly on the border. It fills clockwise from 12 o'clock and hides
+itself at zero, since a round line cap would otherwise leave a dot.
+Icons are Hugeicons free (MIT): `volume-high` at rest, `pause` while
+playing.
+
+Two sources, set by `PLAYLIST.source` in `script.js`:
+
+- `youtube` (default) — the official embed API. For a commercial track
+  this is the licensed way to play it, and the API still exposes
+  position, so the ring works. **Needs a served page**: from a `file://`
+  URL the API cannot verify its handshake and never signals ready.
+- `file` — plays `audio/…`, for a licensed copy you host yourself.
+  Works anywhere, including from a plain file.
+
+If neither can start, the button labels itself and links out to the
+track rather than sitting dead.
 
 ## Migration note
 
