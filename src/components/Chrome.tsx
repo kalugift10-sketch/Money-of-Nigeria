@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import { usePlayer } from "./Player";
 import { entries, meta } from "@/lib/data";
 import s from "./Chrome.module.css";
-import { Guilloche } from "./Guilloche";
 import { Coin3D } from "./Coin";
 import { NavProgress, Search } from "./NavExtras";
 
@@ -38,6 +37,24 @@ export function SoundButton() {
   );
 }
 
+/** Phones: the music lives at the bottom of the menu. */
+function SheetPlayer() {
+  const p = usePlayer();
+  return (
+    <div data-player className={s.sheetPlayer}>
+      <Disc size={48} cover={p.current.cover} spinning={p.playing} />
+      <div className={s.miniText}><strong>{p.current.title}</strong><span>{p.current.artist}</span></div>
+      <button className={s.miniBtn} onClick={p.prev} aria-label="Previous song"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden><path d="M12 3v10L5 8z" fill="currentColor"/><rect x="3" y="3" width="2" height="10" rx="1" fill="currentColor"/></svg></button>
+      <button className={s.miniBtn} onClick={p.toggle} aria-label={p.playing ? "Pause" : "Play"}>
+        {p.playing
+          ? <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden><rect x="3" y="2" width="3.5" height="12" rx="1.2" fill="currentColor" /><rect x="9.5" y="2" width="3.5" height="12" rx="1.2" fill="currentColor" /></svg>
+          : <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden><path d="M5 2.8v10.4a1 1 0 0 0 1.5.86l8.3-5.2a1 1 0 0 0 0-1.72L6.5 1.94A1 1 0 0 0 5 2.8z" fill="currentColor" /></svg>}
+      </button>
+      <button className={s.miniBtn} onClick={p.next} aria-label="Next song"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden><path d="M4 3v10l7-5z" fill="currentColor"/><rect x="11" y="3" width="2" height="10" rx="1" fill="currentColor"/></svg></button>
+    </div>
+  );
+}
+
 export function Header() {
   const [open, setOpen] = useState(false);
   const path = usePathname();
@@ -48,30 +65,40 @@ export function Header() {
       <NavProgress />
       <nav className={s.nav}>
         {path !== "/" && <Search />}
-        <SoundButton />
         <Link href="/playlist" className={`${s.link} ${cur("/playlist")}`} aria-current={cur("/playlist") ? "page" : undefined}>Money playlist</Link>
+        <Link href="/sources" className={`${s.link} ${cur("/sources")}`} aria-current={cur("/sources") ? "page" : undefined}>Sources</Link>
         <Link href="/about" className={`${s.link} ${cur("/about")}`} aria-current={cur("/about") ? "page" : undefined}>About</Link>
         <button className={s.menu} aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}>
           <span /><span />
         </button>
       </nav>
       {open && (
-        <div className={s.sheet} onClick={() => setOpen(false)}>
+        <div className={s.sheet} onClick={(e) => { if (!(e.target as HTMLElement).closest("[data-player]")) setOpen(false); }}>
           <Link href="/" className={path === "/" ? s.sheetOn : s.sheetLink}>Home</Link>
           <Link href="/playlist" className={cur("/playlist") ? s.sheetOn : s.sheetLink}>Money Playlist</Link>
+          <Link href="/sources" className={cur("/sources") ? s.sheetOn : s.sheetLink}>Sources</Link>
           <Link href="/about" className={cur("/about") ? s.sheetOn : s.sheetLink}>About</Link>
+          <SheetPlayer />
         </div>
       )}
     </header>
   );
 }
 
-const SOURCE_NAMES: Record<string, string> = {
-  "cbn.gov.ng": "Central Bank of Nigeria",
-  "numista.com": "Numista",
-  "onlinecoin.club": "Online Coin Club",
-  "pmgnotes.com": "PMG Notes",
-};
+const LINKEDIN = "https://ng.linkedin.com/in/gift-kalu-3969a3238";
+const SOCIALS: [string, string][] = [
+  ["Instagram", "https://www.instagram.com/battleaxefj"],
+  ["X (Twitter)", "https://x.com/giftuxui"],
+  ["LinkedIn", LINKEDIN],
+];
+const SOURCES: [string, string][] = [
+  ["Central Bank of Nigeria", "https://www.cbn.gov.ng/Currency/historycur.html"],
+  ["Numista", "https://en.numista.com/catalogue/nigeria-1.html"],
+  ["Online Coin Club", "https://onlinecoin.club/Coins/Country/Nigeria/"],
+  ["PMG Notes", "https://www.pmgnotes.com/"],
+];
+// Money in Nigerian languages and slang
+const WORDS = ["Money", "Owó", "Kuɗi", "Ego", "Naira", "Kobo", "Igho", "Okúk", "Kpali", "Mulla"];
 
 export function Footer() {
   const strip = entries.filter((e) => e.images.front && e.slug !== "trade-by-barter");
@@ -82,16 +109,16 @@ export function Footer() {
     if (!window.matchMedia("(hover: none)").matches) return;
     setTouchUI(true);
     const el = mq.current; if (!el) return;
-    let held = false, resume = 0, raf = 0;
+    let held = false, resume = 0, raf = 0, x = el.scrollLeft;
     const down = () => { held = true; };
-    const up = () => { held = false; resume = Date.now() + 2000; };
+    const up = () => { held = false; resume = Date.now() + 1500; };
     el.addEventListener("touchstart", down, { passive: true });
     el.addEventListener("touchend", up); el.addEventListener("touchcancel", up);
     const step = () => {
-      if (!held && Date.now() > resume) {
-        el.scrollLeft += 0.5;
-        if (el.scrollLeft >= el.scrollWidth / 2) el.scrollLeft -= el.scrollWidth / 2;
-      }
+      const half = el.scrollWidth / 2;
+      if (held || Date.now() < resume) x = el.scrollLeft; // follow the finger
+      else { x += 0.6; if (x >= half) x -= half; el.scrollLeft = x; } // keep a float so it never stalls
+      if (el.scrollLeft >= half) { x -= half; el.scrollLeft = x; }
       raf = requestAnimationFrame(step);
     };
     raf = requestAnimationFrame(step);
@@ -99,7 +126,6 @@ export function Footer() {
   }, []);
   return (
     <footer className={s.footer}>
-      <div className={s.guil} aria-hidden><Guilloche color="#1F5A45" width={1440} height={700} lines={24} amp={22} /></div>
       <div className={`wrap ${s.fwrap}`}>
         <div className={s.strip}>
           <p className={s.stripLabel}>500 years in one line</p>
@@ -121,13 +147,32 @@ export function Footer() {
         <div className={s.cols}>
           <div><h3>About</h3><p>{meta.description}</p></div>
           <div>
-            <h3>Sources</h3>
-            <ul>{["cbn.gov.ng", "numista.com", "onlinecoin.club", "pmgnotes.com"].map((k) => <li key={k}>{SOURCE_NAMES[k] ?? k}</li>)}</ul>
-            <p className={s.policy}><Link href="/sources">All sources →</Link></p>
+            <h3>Explore</h3>
+            <ul>
+              <li><Link href="/">All money</Link></li>
+              <li><Link href="/playlist">Money playlist</Link></li>
+              <li><Link href="/sources">Sources</Link></li>
+              <li><Link href="/about">About</Link></li>
+            </ul>
           </div>
-          <div><h3>Listen</h3><Link href="/playlist">Money Playlist ↗</Link></div>
+          <div>
+            <h3>Main sources</h3>
+            <ul>{SOURCES.map(([n, u]) => <li key={u}><a href={u} target="_blank" rel="noopener">{n}</a></li>)}</ul>
+          </div>
+          <div>
+            <h3>Follow</h3>
+            <ul>{SOCIALS.map(([n, u]) => <li key={u}><a href={u} target="_blank" rel="noopener">{n}</a></li>)}</ul>
+          </div>
         </div>
-        <div className={s.credit}><span>Designed by Gift Kalu</span><span>© {new Date().getFullYear()} The Money of Nigeria</span></div>
+      </div>
+      <div className={s.words} aria-hidden>
+        <div className={s.wordsTrack}>
+          {[...WORDS, ...WORDS].map((w, i) => <span key={i}>{w}<i>·</i></span>)}
+        </div>
+      </div>
+      <div className={`wrap ${s.credit}`}>
+        <a href={LINKEDIN} target="_blank" rel="noopener">Designed by Gift Kalu</a>
+        <span>© {new Date().getFullYear()} The Money of Nigeria</span>
       </div>
     </footer>
   );

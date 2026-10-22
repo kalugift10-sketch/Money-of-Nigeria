@@ -38,4 +38,4 @@
 .sources ol { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
 .sources ol a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; word-break: break-word; }
 .allSrc { font-size: 14px; color: var(--brand); }
-@media (max-width: 760px) { .crumbs, .sources { margin-left: 16px; margin-right: 16px; } }
+@media (max-width: 760px) { .crumbs, .sources { margin-left: 16px; margin-right: 16px; } .crumbs { margin-top: 20px; margin-bottom: -16px; } }

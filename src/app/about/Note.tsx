@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import s from "./about.module.css";
 
 /** Gift's G-Money note. Tilts with the cursor (desktop) or phone movement (mobile).
- *  Replace /public/images/g-money-note.webp with the final generated note. */
+ *  Replace /public/images/g-money-2026.webp with the final generated note. */
 export function Note() {
   const el = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -20,7 +20,7 @@ export function Note() {
     <div className={s.noteScene}>
       <div ref={el} className={s.note}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/g-money-note.webp" alt="Gift Kalu on a G-Money note" onError={(e) => ((e.currentTarget.style.display = "none"))} />
+        <img src="/images/g-money-2026.webp" alt="Gift Kalu on a G-Money note" onError={(e) => ((e.currentTarget.style.display = "none"))} />
         <span className={s.notePh}>G-MONEY</span>
       </div>
     </div>

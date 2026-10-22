@@ -33,3 +33,5 @@
 .group { scroll-margin-top: 110px; }
 @media (min-width: 1001px) { .page { padding-left: 64px; } }
 @media (max-width: 1000px) { .page { padding-left: 40px !important; } }
+.hidden { opacity: 0; pointer-events: none; }
+.rail { transition: width .25s var(--ease), opacity .2s; }

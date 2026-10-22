@@ -12,7 +12,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head><script dangerouslySetInnerHTML={{ __html: `try{if(sessionStorage.getItem("mon-loaded")==="1")document.documentElement.classList.add("mon-seen")}catch(e){}` }} /></head>
       <body suppressHydrationWarning>
         <PlayerProvider>
           <Loading />

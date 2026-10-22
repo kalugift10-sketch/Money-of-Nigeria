@@ -35,10 +35,12 @@ export function Search() {
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
   const [hi, setHi] = useState(0);
+  const [expanded, setExpanded] = useState(false); // phones: icon until tapped
+  const input = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const box = useRef<HTMLDivElement>(null);
   const path = usePathname();
-  useEffect(() => { setQ(""); setOpen(false); }, [path]);
+  useEffect(() => { setQ(""); setOpen(false); setExpanded(false); }, [path]);
   useEffect(() => {
     const off = (e: MouseEvent) => { if (!box.current?.contains(e.target as Node)) setOpen(false); };
     document.addEventListener("mousedown", off);
@@ -55,15 +57,19 @@ export function Search() {
   }, [q]);
   const go = (slug: string) => { setOpen(false); router.push(`/money/${slug}`); };
   return (
-    <div className={s.search} ref={box}>
+    <>
+    <button className={s.searchBtn} aria-label="Search money" onClick={() => { setExpanded(true); setTimeout(() => input.current?.focus(), 30); }}>
+      <svg width="20" height="20" viewBox="0 0 16 16" aria-hidden><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" strokeWidth="1.5" /><path d="M11 11l3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
+    </button>
+    <div className={`${s.search} ${expanded ? s.expanded : ""}`} ref={box}>
       <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden className={s.icon}><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" strokeWidth="1.5" /><path d="M11 11l3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
-      <input value={q} placeholder="Search money" aria-label="Search money" role="combobox" aria-expanded={open && hits.length > 0} aria-controls="search-list"
+      <input ref={input} type="search" value={q} placeholder="Search money" aria-label="Search money" role="combobox" aria-expanded={open && hits.length > 0} aria-controls="search-list"
         onChange={(e) => { setQ(e.target.value); setOpen(true); setHi(0); }} onFocus={() => setOpen(true)}
         onKeyDown={(e) => {
           if (e.key === "ArrowDown") { e.preventDefault(); setHi((h) => Math.min(h + 1, hits.length - 1)); }
           if (e.key === "ArrowUp") { e.preventDefault(); setHi((h) => Math.max(h - 1, 0)); }
           if (e.key === "Enter" && hits[hi]) go(hits[hi].slug);
-          if (e.key === "Escape") setOpen(false);
+          if (e.key === "Escape") { setOpen(false); setExpanded(false); }
         }} />
       {open && q.trim() && (
         <ul className={s.list} id="search-list" role="listbox">
@@ -79,6 +85,10 @@ export function Search() {
           ))}
         </ul>
       )}
+      <button className={s.close} aria-label="Close search" onClick={() => { setExpanded(false); setOpen(false); setQ(""); }}>
+        <svg width="18" height="18" viewBox="0 0 16 16" aria-hidden><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
+      </button>
     </div>
+    </>
   );
 }

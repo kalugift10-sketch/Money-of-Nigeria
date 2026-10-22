@@ -13,7 +13,6 @@ export default function Playlist() {
     <div className="wrap"><nav className={s.crumbs} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><span aria-current="page">Money Playlist</span></nav></div>
     <div className={`wrap ${s.page}`}>
       <section className={s.now}>
-        <p className="label">Money Playlist</p>
         <Disc size="min(480px, 100%)" cover={p.current.cover} spinning={p.playing} />
         <div className={s.meta}>
           <h1>{p.current.title}</h1>

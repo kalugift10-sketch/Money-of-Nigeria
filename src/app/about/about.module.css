@@ -10,7 +10,8 @@
 .notePh { position: absolute; left: 7%; top: 25%; font-size: 54px; font-weight: 700; color: #2c3a4c; }
 @media (max-width: 1000px) {
   .page { grid-template-columns: 1fr; gap: 32px; padding-top: 32px; }
-  .visual { position: static; order: -1; }
+  .visual { position: sticky; top: 72px; order: -1; z-index: 1; background: #fff; padding: 16px 0 20px; margin: 0 calc(-1 * var(--pad)); padding-left: var(--pad); padding-right: var(--pad); }
+  .page { padding-top: 0; }
   .para { font-size: 17px; }
   .big { font-size: 30px; }
 }
@@ -21,3 +22,6 @@
 .connect ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
 .connect a { display: inline-flex; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: 14px; }
 .connect a:hover { border-color: var(--ink); }
+
+.page > nav { grid-column: 1 / -1; margin-bottom: -48px; }
+@media (max-width: 1000px) { .page > nav { order: -2; margin: 20px 0 0; } }

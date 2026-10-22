@@ -68,9 +68,9 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
           onReady: () => setReady(true),
           onStateChange: (e: { data: number }) => {
             // Keep the buttons in step with what YouTube is really doing.
-            if (e.data === 1) setPlaying(true);
-            if (e.data === 2 && !wantPlay.current) setPlaying(false);
-            if (e.data === 2 && wantPlay.current) yt.current?.playVideo(); // paused by the browser, not the visitor: resume
+            // Only mirror what YouTube is really doing; never restart it behind the visitor's back.
+            if (e.data === 1) { setPlaying(true); wantPlay.current = true; }
+            if (e.data === 2) { setPlaying(false); wantPlay.current = false; }
             if (window.YT && e.data === window.YT.PlayerState.ENDED) {
               const n = (indexRef.current + 1) % playlist.length;
               setIndex(n);
@@ -135,10 +135,10 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     setPlaying(true);
     const check = setTimeout(() => {
       const st = (p as unknown as { getPlayerState?: () => number }).getPlayerState?.();
-      if (window.YT && st === window.YT.PlayerState.PLAYING) return;
+      if (st === 1 || st === 3) return; // playing or still buffering: autoplay worked
       wantPlay.current = false;
       setPlaying(false);
-      const evs = ["pointerdown", "keydown", "scroll", "touchstart"];
+      const evs = ["pointerdown", "keydown"]; // a real tap or key, never a scroll
       const stop = () => evs.forEach((ev) => window.removeEventListener(ev, go));
       // First interaction starts the music, unless it was a press on a player button.
       function go(ev: Event) {
@@ -150,7 +150,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       }
       cancelAuto.current = stop;
       evs.forEach((ev) => window.addEventListener(ev, go, { passive: true }));
-    }, 1200);
+    }, 2500);
     return () => clearTimeout(check);
   }, [ready]);
 

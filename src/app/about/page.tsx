@@ -20,22 +20,22 @@ const PARAS: { t: string; big?: boolean }[] = [
 const PORTFOLIO = "#"; // TODO: add portfolio link when it is live
 // TODO: add Instagram and X (Twitter) links
 const SOCIALS: [string, string][] = [
-  ["Instagram", "#"],
-  ["X (Twitter)", "#"],
+  ["Instagram", "https://www.instagram.com/battleaxefj"],
+  ["X (Twitter)", "https://x.com/giftuxui"],
   ["LinkedIn", "https://ng.linkedin.com/in/gift-kalu-3969a3238"],
 ];
 
 export default function About() {
   return (
     <div className={`wrap ${s.page}`}>
+      <nav className={s.crumbs} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><span aria-current="page">About</span></nav>
+      <h1 className="sr-only">About</h1>
       <div className={s.text}>
-        <nav className={s.crumbs} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><span aria-current="page">About</span></nav>
-        <p className="label">About</p>
         {PARAS.map((p, i) => <p key={i} className={p.big ? s.big : s.para}>{p.t}</p>)}
         <a href={PORTFOLIO} className={s.link}>View my portfolio →</a>
         <div className={s.connect}>
           <p className="label">Let’s connect</p>
-          <ul>{SOCIALS.map(([n, u]) => <li key={n}><a href={u} target="_blank" rel="noopener">{n} ↗</a></li>)}</ul>
+          <ul>{SOCIALS.map(([n, u]) => <li key={n}><a href={u} target="_blank" rel="noopener">{n} ↗︎</a></li>)}</ul>
         </div>
       </div>
       <div className={s.visual}><Note /></div>

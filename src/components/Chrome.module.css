@@ -30,8 +30,7 @@
 
 /* Footer */
 .footer { position: relative; overflow: hidden; background: var(--footer); color: #fff; margin-top: 0; }
-.guil { position: absolute; inset: 0; }
-.fwrap { position: relative; padding-top: 72px; padding-bottom: 56px; display: flex; flex-direction: column; gap: 56px; }
+.fwrap { position: relative; padding-top: 72px; padding-bottom: 40px; display: flex; flex-direction: column; gap: 56px; }
 .stripLabel { font-size: 14px; color: var(--footer-ink); margin-bottom: 16px; }
 .marquee { overflow: hidden; }
 .tiles { display: flex; gap: 8px; width: max-content; animation: marquee 60s linear infinite; }
@@ -44,12 +43,15 @@
 .flip img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; backface-visibility: hidden; filter: drop-shadow(0 2px 3px rgba(60,40,10,.2)); }
 .fBack { transform: rotateY(180deg); }
 .tile2:hover .canFlip { transform: rotateY(180deg); }
-.cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; font-size: 13px; font-weight: 300; color: var(--footer-ink); }
+.cols { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; font-size: 13px; font-weight: 300; color: var(--footer-ink); }
 .cols h3 { font-size: 13px; font-weight: 500; color: #fff; margin-bottom: 12px; }
+.cols ul { padding: 0; }
 .cols li { list-style: none; margin-bottom: 10px; }
+.cols a, .credit a { color: #d6e4dd; text-decoration: underline; text-decoration-color: rgba(214,228,221,.35); text-underline-offset: 4px; }
+.cols a:hover, .credit a:hover { color: #fff; text-decoration-color: #fff; }
 .cols a:hover { color: #fff; }
 .policy { margin-top: 14px; color: #6f8f82; max-width: 36em; line-height: 1.5; }
-.credit { display: flex; justify-content: space-between; padding-top: 24px; border-top: 1px solid var(--footer-line); font-size: 13px; font-weight: 300; color: var(--footer-ink); }
+.credit { display: flex; justify-content: space-between; padding-top: 24px; padding-bottom: 32px; font-size: 13px; font-weight: 300; color: var(--footer-ink); }
 @media (max-width: 760px) {
   .tile2 { width: 72px; }
   .cols { grid-template-columns: 1fr; }
@@ -82,3 +84,24 @@
 .swipe { overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
 .swipe::-webkit-scrollbar { display: none; }
 .swipe .tiles { animation: none; }
+
+/* Big money words, edge to edge */
+.words { overflow: hidden; border-top: 1px solid var(--footer-line); border-bottom: 1px solid var(--footer-line); padding: 8px 0; }
+.wordsTrack { display: flex; width: max-content; animation: words 40s linear infinite; }
+.wordsTrack span { font-size: clamp(64px, 14vw, 200px); font-weight: 500; letter-spacing: -0.04em; line-height: 1; color: #f3fdf2; white-space: nowrap; display: flex; align-items: center; }
+.wordsTrack i { font-style: normal; color: var(--brand); margin: 0 0.25em; }
+@keyframes words { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .wordsTrack { animation-duration: 160s; } }
+
+/* Phones: no floating player; music sits in the menu */
+.sheetPlayer { margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 20px; background: var(--footer); color: #fff; font-size: 15px; }
+.sheetPlayer .miniText { flex: 1; min-width: 0; }
+.sheetPlayer .miniText strong, .sheetPlayer .miniText span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sheetPlayer .miniBtn { width: 40px; height: 40px; flex: none; }
+@media (max-width: 760px) {
+  .mini, .miniSmall { display: none !important; }
+  .cols { grid-template-columns: 1fr 1fr; row-gap: 32px; font-size: 15px; }
+  .cols > div:first-child { grid-column: 1 / -1; }
+  .cols li { margin-bottom: 14px; }
+  .sheet { padding-bottom: 32px; }
+}

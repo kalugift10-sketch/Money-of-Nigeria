@@ -11,7 +11,7 @@ export default function Sources() {
   return (
     <div className={`wrap ${s.page}`}>
       <nav className={s.crumbs} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><span aria-current="page">Sources</span></nav>
-      <h1>Sources</h1>
+      <h1 className="sr-only">Sources</h1>
       <Rail items={withSources.map((e) => ({ slug: e.slug, name: e.name, era: e.era }))} />
       {withSources.map((e) => (
         <section key={e.slug} id={e.slug} className={s.group}>

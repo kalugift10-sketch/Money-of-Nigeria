@@ -13,13 +13,19 @@ const ERA: Record<string, string> = {
 export function Rail({ items }: { items: Item[] }) {
   const [on, setOn] = useState(items[0]?.slug);
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false); // hide over the footer
+  useEffect(() => {
+    const f = document.querySelector("footer"); if (!f) return;
+    const io = new IntersectionObserver(([e]) => setHidden(e.isIntersecting));
+    io.observe(f); return () => io.disconnect();
+  }, []);
   useEffect(() => {
     const io = new IntersectionObserver((es) => { for (const e of es) if (e.isIntersecting) setOn(e.target.id); }, { rootMargin: "-30% 0px -65% 0px" });
     items.forEach((i) => { const el = document.getElementById(i.slug); if (el) io.observe(el); });
     return () => io.disconnect();
   }, [items]);
   return (
-    <nav className={`${s.rail} ${open ? s.open : ""}`} aria-label="Jump to an item"
+    <nav className={`${s.rail} ${open ? s.open : ""} ${hidden ? s.hidden : ""}`} aria-label="Jump to an item"
       onPointerEnter={(e) => { if (e.pointerType === "mouse") setOpen(true); }} onPointerLeave={(e) => { if (e.pointerType === "mouse") setOpen(false); }}>
       <button className={s.railToggle} onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-label="Show the list of items" />
       {items.map((i, k) => {

@@ -11,7 +11,7 @@ import s from "./Loading.module.css";
  * "Did you know?" facts. No music, no buttons: it moves on by itself.
  */
 export function Loading() {
-  const [show, setShow] = useState<boolean | null>(null);
+  const [show, setShow] = useState<boolean | null>(true);
   const [pct, setPct] = useState(0);
   const [fact, setFact] = useState(0);
   const [leaving, setLeaving] = useState(false);
@@ -55,7 +55,7 @@ export function Loading() {
   if (!show) return null;
   const f = facts[fact];
   return (
-    <div className={`${s.screen} ${leaving ? s.leave : ""}`} role="status" aria-live="polite">
+    <div data-loader className={`${s.screen} ${leaving ? s.leave : ""}`} role="status" aria-live="polite">
       <div className={s.top}><Logo /></div>
       <div className={s.mid}>
         <div className={s.loader}>

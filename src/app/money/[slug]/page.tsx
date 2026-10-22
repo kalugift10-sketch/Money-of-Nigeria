@@ -34,7 +34,7 @@ export default async function Detail({ params }: { params: Promise<{ slug: strin
       <div className={s.product}>
         <Stage e={e} />
         <div className={s.info}>
-          <p className="label">{e.eraLine}</p>
+          <p className="label">{e.eraLine.split(" · ")[0]}{e.eraLine.includes(" · ") && <> · <span style={{ textTransform: "none" }}>{e.eraLine.split(" · ").slice(1).join(" · ")}</span></>}</p>
           <h1 className={s.title}>{e.name}</h1>
           <span className={`badge ${e.status === "Active" ? "active" : ""}`}>{e.status}</span>
           {e.details.length > 0 && (
