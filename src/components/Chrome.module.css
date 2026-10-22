@@ -5,10 +5,10 @@
 .tile span { font-family: var(--mark); font-weight: 700; font-size: 28px; line-height: 32px; color: var(--on-mark); transform: rotate(-9.84deg); }
 .name { font-size: 20px; line-height: 40px; white-space: nowrap; }
 .nav { display: flex; align-items: center; gap: 16px; }
-.link { font-size: 14px; font-weight: 300; color: #9CA3AF; transition: color 160ms; }
+.link { font-size: 14px; font-weight: 300; color: #6b7280; padding: 8px 4px; transition: color 160ms; }
 .link:hover { color: var(--ink); }
 .current { color: var(--ink); font-weight: 400; }
-.sheetLink { color: #9CA3AF; }
+.sheetLink { color: #6b7280; }
 .sheetOn { color: var(--ink); }
 .menu { display: none; flex-direction: column; gap: 5px; padding: 8px 4px; }
 .menu span { display: block; width: 20px; height: 1.5px; background: var(--ink); transition: transform 200ms var(--ease); }
@@ -68,7 +68,7 @@
 .miniText span { font-weight: 300; font-size: 12px; color: var(--footer-ink); }
 .miniBtn { width: 36px; height: 36px; border-radius: 50%; background: #fff; color: var(--footer); display: grid; place-items: center; }
 .miniBtn svg { margin-left: 1px; }
-.miniMin { align-self: flex-start; margin-top: 2px; padding: 0 2px; color: #fff; opacity: .85; }
+.miniMin { align-self: flex-start; margin: -6px -8px 0 0; padding: 8px; min-width: 32px; min-height: 32px; color: #fff; opacity: .85; }
 .mini { cursor: grab; touch-action: none; }
 .miniSmall img, .mini img { pointer-events: none; -webkit-user-drag: none; user-select: none; }
 .miniSmall { position: fixed; user-select: none; left: 24px; bottom: 24px; z-index: 45; padding: 6px; border-radius: 50%; background: var(--footer); box-shadow: 0 8px 24px rgba(0,0,0,0.2); cursor: grab; touch-action: none; }

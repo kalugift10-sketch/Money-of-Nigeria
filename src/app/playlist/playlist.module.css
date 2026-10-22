@@ -4,8 +4,8 @@
 .meta { text-align: center; display: flex; flex-direction: column; gap: 8px; }
 .meta h1 { font-size: 48px; font-weight: 500; letter-spacing: -0.02em; }
 .meta p { font-size: 20px; font-weight: 300; color: var(--muted); }
-.seek { width: 100%; appearance: none; height: 3px; background: linear-gradient(90deg, var(--ink) var(--p), var(--line) var(--p)); border-radius: 2px; cursor: pointer; }
-.seek::-webkit-slider-thumb { appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--ink); }
+.seek { width: 100%; appearance: none; height: 28px; background: linear-gradient(90deg, var(--ink) var(--p), var(--line) var(--p)) center / 100% 3px no-repeat; cursor: pointer; }
+.seek::-webkit-slider-thumb { appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--ink); }
 .controls { display: flex; align-items: center; gap: 16px; }
 .side { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; }
 .main { width: 64px; height: 64px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; }

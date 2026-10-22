@@ -237,7 +237,7 @@ export function MiniPlayer() {
     if (d && !d.moved && (small || scrolling)) { setSmall(false); setScrolling(false); }
   };
 
-  if (!p.started || path === "/playlist") return null;
+  if (path === "/playlist") return null; // always visible elsewhere, even before the music starts
   const style = pos ? { left: pos.x, top: pos.y, bottom: "auto" } : undefined;
   const isPhone = typeof window !== "undefined" && window.matchMedia("(max-width: 760px)").matches;
   if (small || scrolling) {
