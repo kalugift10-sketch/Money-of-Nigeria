@@ -16,9 +16,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head><script dangerouslySetInnerHTML={{ __html: `try{if(sessionStorage.getItem("mon-loaded")==="1")document.documentElement.classList.add("mon-seen")}catch(e){}` }} /></head>
       <body suppressHydrationWarning>
         <PlayerProvider>
+          <a href="#main" className="skip">Skip to content</a>
           <Loading />
           <Header />
-          <main>{children}</main>
+          <main id="main" tabIndex={-1}>{children}</main>
           <Footer />
           <MiniPlayer />
         </PlayerProvider>

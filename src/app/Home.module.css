@@ -71,3 +71,4 @@
 .dashes { align-items: center; }
 .dashMore { font-style: normal; color: var(--muted); font-size: 14px; line-height: 1; margin-left: 2px; }
 .heroFill { width: 100%; aspect-ratio: auto; filter: none; }
+.search:focus-within { outline: 2px solid var(--brand); outline-offset: 2px; }

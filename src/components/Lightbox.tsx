@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import s from "./Lightbox.module.css";
 
 /** Full-screen image view used for every clickable image on the site.
@@ -8,9 +8,22 @@ import s from "./Lightbox.module.css";
 export function Lightbox({ images, index, onIndex, onClose }: { images: string[]; index: number; onIndex: (i: number) => void; onClose: () => void }) {
   const hasPrev = index > 0;
   const hasNext = index < images.length - 1;
+  const box = useRef<HTMLDivElement>(null);
+  // Move focus into the viewer, keep Tab inside it, and give focus back on close.
+  useEffect(() => {
+    const before = document.activeElement as HTMLElement | null;
+    box.current?.querySelector<HTMLElement>("button")?.focus();
+    return () => before?.focus?.();
+  }, []);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
+      if (e.key === "Tab" && box.current) {
+        const f = [...box.current.querySelectorAll<HTMLElement>("button")];
+        const i = f.indexOf(document.activeElement as HTMLElement);
+        e.preventDefault();
+        f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length]?.focus();
+      }
       if (e.key === "ArrowLeft" && hasPrev) onIndex(index - 1);
       if (e.key === "ArrowRight" && hasNext) onIndex(index + 1);
     };
@@ -21,7 +34,7 @@ export function Lightbox({ images, index, onIndex, onClose }: { images: string[]
   }, [index, hasPrev, hasNext, onIndex, onClose]);
 
   return (
-    <div className={s.back} onClick={onClose} role="dialog" aria-modal="true">
+    <div ref={box} className={s.back} onClick={onClose} role="dialog" aria-modal="true" aria-label="Image viewer">
       <button className={s.x} onClick={onClose} aria-label="Close">
         <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden><path d="M3 3l12 12M15 3L3 15" stroke="currentColor" strokeWidth="1.6" /></svg>
       </button>
@@ -31,7 +44,7 @@ export function Lightbox({ images, index, onIndex, onClose }: { images: string[]
         </button>
       )}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={images[index]} alt="" className={s.img} onClick={(e) => e.stopPropagation()} />
+      <img src={images[index]} alt={`Image ${index + 1} of ${images.length}`} className={s.img} onClick={(e) => e.stopPropagation()} />
       {hasNext && (
         <button className={`${s.arrow} ${s.r}`} onClick={(e) => { e.stopPropagation(); onIndex(index + 1); }} aria-label="Next image">
           <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden><path d="M7 3l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.6" /></svg>
