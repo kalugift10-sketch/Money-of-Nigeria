@@ -1,0 +1,13 @@
+.scene { display: inline-block; perspective: 600px; flex: none; }
+.coin { position: relative; display: block; width: 100%; height: 100%; transform-style: preserve-3d; }
+.edge, .side { position: absolute; inset: 0; border-radius: 50%; }
+.edge { background: #124a0e; }
+.side { backface-visibility: hidden; }
+.front { transform: translateZ(calc(var(--t) * 1.05)); }
+.back { transform: rotateY(180deg) translateZ(calc(var(--t) * 1.05)); }
+.face { display: block; width: 100%; height: 100%; }
+.spin { animation: turn 2.4s cubic-bezier(.45,.05,.55,.95) infinite; }
+.hover { transition: transform 900ms cubic-bezier(.3,.7,.2,1); }
+:global(a:hover) .hover, :global(a:focus-visible) .hover { transform: rotateY(360deg); }
+@keyframes turn { from { transform: rotateY(0); } to { transform: rotateY(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spin { animation: none; } .hover { transition: none; } }

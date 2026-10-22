@@ -1,0 +1,23 @@
+.page { display: grid; grid-template-columns: 1fr 600px; gap: 80px; padding-top: 72px; padding-bottom: 120px; align-items: start; }
+.text { display: flex; flex-direction: column; gap: 20px; }
+.para { font-size: 19px; font-weight: 300; line-height: 1.55; color: var(--body); }
+.big { font-size: 40px; font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; }
+.link { font-size: 18px; font-weight: 500; color: var(--brand); text-decoration: underline; text-underline-offset: 4px; }
+.visual { position: sticky; top: 140px; }
+.noteScene { perspective: 1000px; }
+.note { position: relative; aspect-ratio: 2 / 1; border-radius: 4px; overflow: hidden; transform: rotate(-3deg); transition: transform 300ms var(--ease); box-shadow: 0 12px 28px rgba(0,0,0,0.18); background: linear-gradient(90deg, #d9c6a5, #c9d5e0 50%, #9db3c8); }
+.note img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: 1; }
+.notePh { position: absolute; left: 7%; top: 25%; font-size: 54px; font-weight: 700; color: #2c3a4c; }
+@media (max-width: 1000px) {
+  .page { grid-template-columns: 1fr; gap: 32px; padding-top: 32px; }
+  .visual { position: static; order: -1; }
+  .para { font-size: 17px; }
+  .big { font-size: 30px; }
+}
+.crumbs { display: flex; gap: 8px; font-size: 14px; color: var(--muted); margin-bottom: 8px; }
+.crumbs [aria-current] { color: var(--ink); }
+
+.connect { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
+.connect ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+.connect a { display: inline-flex; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: 14px; }
+.connect a:hover { border-color: var(--ink); }

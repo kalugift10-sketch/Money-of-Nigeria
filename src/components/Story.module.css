@@ -1,0 +1,56 @@
+/* Statement */
+.statement { display: flex; flex-direction: column; gap: 12px; padding: 56px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.lead { font-size: 22px; font-weight: 300; color: var(--body); }
+.number { font-family: var(--mono); font-weight: 300; font-size: 120px; line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+
+/* Goods */
+.goods { display: flex; flex-direction: column; gap: 24px; }
+.goodsRow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.good { display: flex; flex-direction: column; gap: 12px; }
+.goodImg { height: 320px; border-radius: 8px; overflow: hidden; display: block; width: 100%; cursor: zoom-in; }
+.goodImg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.good strong { font-size: 24px; font-weight: 500; }
+.good span { font-size: 15px; font-weight: 300; color: var(--body); opacity: 0; transition: opacity 300ms var(--ease); }
+@media (hover: hover) { .good:hover span { opacity: 1; } }
+
+/* Route */
+.journey { display: flex; flex-direction: column; gap: 32px; }
+.route { position: relative; height: var(--h); }
+.line { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.line path { fill: none; stroke: var(--brand); stroke-width: 1.5; vector-effect: non-scaling-stroke; transition: stroke-dashoffset 120ms linear; }
+.rail { display: none; }
+.line path.track { stroke: rgba(0,141,81,0.15); transition: none; }
+.stops { list-style: none; }
+.stop { position: absolute; top: calc(var(--y) - 10px); width: 100%; opacity: 0.15; transform: translateY(12px); transition: opacity 500ms var(--ease), transform 500ms var(--ease); }
+.in { opacity: 1; transform: none; }
+.dot { position: absolute; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 3px solid var(--brand); }
+.l .dot { left: calc(300 / 1360 * 100% - 10px); }
+.r .dot { left: calc(1060 / 1360 * 100% - 10px); }
+.card { position: absolute; top: -12px; width: 440px; padding: 12px; background: #fff; display: flex; flex-direction: column; gap: 8px; text-align: left; }
+.l .card { left: calc(300 / 1360 * 100% + 28px); }
+.r .card { right: calc((1360 - 1060) / 1360 * 100% + 28px); text-align: right; align-items: flex-end; }
+.year { font-family: var(--mono); font-weight: 300; font-size: 32px; color: var(--brand); }
+.ctitle { font-size: 22px; font-weight: 500; }
+.what { font-size: 15px; font-weight: 300; line-height: 1.5; color: var(--body); display: none; }
+.what em { display: block; font-style: normal; color: var(--muted); margin-top: 6px; }
+.show { display: block; }
+
+@media (max-width: 760px) {
+  .statement, .goods, .journey { margin: 0 16px; }
+  .lead { font-size: 17px; }
+  .number { font-size: 46px; }
+  .goodsRow { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; }
+  .good { flex: 0 0 220px; scroll-snap-align: start; }
+  .goodImg { height: 220px; }
+  .good strong { font-size: 18px; }
+  .good span { opacity: 1; font-size: 14px; }
+  .route { height: auto; }
+  .line { display: none; }
+  .rail { display: block; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1.5px; background: rgba(0,141,81,0.15); }
+  .rail span { display: block; height: 100%; background: var(--brand); transform-origin: top; }
+  .stop { position: relative; top: 0; padding: 0 0 28px 32px; }
+  .dot { left: 0 !important; top: 4px; width: 16px; height: 16px; }
+  .card { position: static; width: auto; padding: 0; text-align: left !important; align-items: flex-start !important; }
+  .year { font-size: 20px; }
+  .ctitle { font-size: 17px; }
+}

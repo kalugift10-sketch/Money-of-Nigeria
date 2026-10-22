@@ -1,0 +1,32 @@
+.media { display: flex; flex-direction: column; gap: 16px; }
+.stage { position: relative; height: 600px; border-radius: 8px; overflow: hidden; display: grid; place-items: center; }
+.flat { position: relative; width: 70%; height: 80%; object-fit: contain; filter: drop-shadow(0 10px 18px rgba(0,0,0,.12)); }
+.fill { width: 100%; height: auto; max-height: 100%; align-self: center; filter: none; }
+.ph { font-family: var(--mark); font-weight: 700; font-size: 96px; color: rgba(0,0,0,0.1); transform: rotate(-9.84deg); }
+.zoom { position: absolute; right: 24px; top: 24px; width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 1px solid var(--line); display: grid; place-items: center; }
+.hint { position: absolute; left: 24px; bottom: 20px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: #9b8c7e; }
+.boxes { display: flex; gap: 12px; }
+.box { width: 88px; height: 88px; border-radius: 6px; border: 1px solid var(--line); overflow: hidden; }
+.box img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+.on { border: 1.5px solid var(--brand); }
+.viewer { position: fixed; inset: 0; z-index: 90; background: rgba(255,255,255,0.97); display: grid; place-items: center; padding: 40px; cursor: zoom-out; }
+.viewer img { max-width: 100%; max-height: 100%; object-fit: contain; touch-action: pinch-zoom; }
+.close { position: absolute; top: 24px; right: 24px; font-size: 14px; }
+@media (max-width: 760px) {
+  .stage { height: auto; aspect-ratio: 1; border-radius: 0; }
+  .boxes { padding: 0 16px; gap: 8px; }
+  .box { width: 64px; height: 64px; }
+  .zoom { right: 16px; top: 16px; width: 36px; height: 36px; }
+  .hint { left: 16px; bottom: 16px; }
+}
+.word { font-family: var(--mono); font-weight: 400; font-size: 56px; letter-spacing: .08em; text-transform: uppercase; color: rgba(0,0,0,.09); }
+.stage { cursor: zoom-in; }
+.zoomOn { background: var(--ink); color: #fff; border-color: var(--ink); }
+.mag { position: absolute; inset: 0; z-index: 3; overflow: hidden; display: grid; place-items: center; cursor: crosshair; background: inherit; }
+.mag img { width: 80%; height: 80%; object-fit: contain; transition: transform 250ms var(--ease), transform-origin 60ms linear; }
+.zoom { z-index: 4; }
+.zoomPair { position: absolute; right: 24px; top: 24px; z-index: 4; display: flex; flex-direction: column; border-radius: 20px; background: #fff; border: 1px solid var(--line); overflow: hidden; }
+.zoom2 { width: 40px; height: 40px; display: grid; place-items: center; color: var(--ink); }
+.zoom2 + .zoom2 { border-top: 1px solid var(--line); }
+.zoom2:disabled { opacity: .35; }
+@media (max-width: 760px) { .zoomPair { right: 16px; top: 16px; } .zoom2 { width: 36px; height: 36px; } }

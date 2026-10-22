@@ -1,0 +1,15 @@
+.wrap { display: flex; flex-direction: column; gap: 20px; }
+.row { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; }
+.v { display: flex; flex-direction: column; gap: 12px; }
+.paper { position: relative; aspect-ratio: 2 / 1; border-radius: 3px; overflow: hidden; background: #F8F4EA; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); align-items: center; gap: 14px; padding: 18px; }
+.img { position: relative; min-height: 0; width: 100%; height: 100%; cursor: zoom-in; }
+.img img { width: 100%; height: 100%; object-fit: contain; display: block; filter: drop-shadow(0 2px 3px rgba(60,40,10,.18)); }
+.year { font-family: var(--mono); font-size: 13px; }
+.current { color: var(--brand); font-weight: 600; }
+.unknown { color: var(--muted); }
+.foot { font-size: 13px; color: var(--muted); }
+@media (max-width: 760px) {
+  .wrap { margin: 0 16px; }
+  .row { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; }
+  .v { flex: 0 0 78%; scroll-snap-align: start; }
+}

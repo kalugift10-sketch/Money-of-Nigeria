@@ -1,0 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&family=Libre+Caslon+Text:wght@700&display=swap");
+
+:root {
+  --brand: #008d51;
+  --brand-mark: #1a6514;
+  --on-mark: #f3fdf2;
+  --footer: #0e3b2c;
+  --footer-line: #1f5a45;
+  --footer-ink: #9fb8ad;
+  --ink: #040404;
+  --body: #374151;
+  --muted: #6b7280;
+  --faint: #9b9b9b;
+  --line: #e5e7eb;
+  --sunken: #f9fafb;
+  --bg: #ffffff;
+
+  --sans: "Stack Sans Headline Variable", "Stack Sans Headline", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --mark: "Libre Caslon Text", Georgia, serif;
+
+  --pad: 40px;
+  --max: 1440px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (max-width: 760px) {
+  :root { --pad: 16px; }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 400; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; color: transparent; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
+
+/* Small green typewriter label: era lines, section labels */
+.label {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+.label.muted { color: var(--muted); }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-family: Inter, var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+  background: var(--sunken);
+  border: 1px solid var(--line);
+  width: fit-content;
+}
+.badge.active { color: #3f6212; background: #f7fee7; border-color: #d9f99d; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; border-radius: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
+}
+
+/* Old paper: light, creased. Used behind money in Versions and the footer marquee. */
+.paper { position: relative; background: #F8F4EA; overflow: hidden; }
+.paper::before { content: ""; position: absolute; inset: 0; opacity: .55; mix-blend-mode: multiply; background-size: cover; pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='450'><filter id='c'><feTurbulence type='fractalNoise' baseFrequency='.012 .02' numOctaves='4' seed='7'/><feDiffuseLighting lighting-color='%23fff' surfaceScale='3.2'><feDistantLight azimuth='125' elevation='58'/></feDiffuseLighting><feColorMatrix values='1 0 0 0 0  0 .98 0 0 0  0 0 .93 0 0  0 0 0 1 0'/></filter><rect width='600' height='450' filter='url(%23c)'/></svg>"); }
