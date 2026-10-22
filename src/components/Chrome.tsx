@@ -198,6 +198,17 @@ export function MiniPlayer() {
   }, []);
   useEffect(() => { try { sessionStorage.setItem("mon-mini-small", small ? "1" : "0"); } catch {} }, [small]);
 
+  // Phones: shrink to the disc while scrolling, open again when scrolling stops,
+  // unless the visitor minimised it themselves (then it stays a disc).
+  const [scrolling, setScrolling] = useState(false);
+  useEffect(() => {
+    if (!window.matchMedia("(max-width: 760px)").matches) return;
+    let t: ReturnType<typeof setTimeout>;
+    const on = () => { setScrolling(true); clearTimeout(t); t = setTimeout(() => setScrolling(false), 700); };
+    window.addEventListener("scroll", on, { passive: true });
+    return () => { window.removeEventListener("scroll", on); clearTimeout(t); };
+  }, []);
+
   // Desktop only: drag by holding anywhere on the player.
   const onDown = (e: React.PointerEvent) => {
     if (window.matchMedia("(max-width: 760px)").matches) return;
@@ -227,9 +238,9 @@ export function MiniPlayer() {
 
   if (!p.started || path === "/playlist") return null;
   const style = pos ? { left: pos.x, top: pos.y, bottom: "auto" } : undefined;
-  if (small) {
+  if (small || scrolling) {
     return (
-      <div data-player ref={box} className={s.miniSmall} style={style} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp}
+      <div data-player ref={box} className={s.miniSmall} onClick={() => { if (window.matchMedia("(max-width: 760px)").matches) { setSmall(false); setScrolling(false); } }} style={style} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp}
         role="button" aria-label="Open the music player" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter") setSmall(false); }}>
         <Disc size={44} cover={p.current.cover} spinning={p.playing} />
       </div>
