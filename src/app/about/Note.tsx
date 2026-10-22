@@ -20,8 +20,7 @@ export function Note() {
     <div className={s.noteScene}>
       <div ref={el} className={s.note}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/g-money-2026.webp" alt="Gift Kalu on a G-Money note" onError={(e) => ((e.currentTarget.style.display = "none"))} />
-        <span className={s.notePh}>G-MONEY</span>
+        <img src="/images/g-money-2026.webp" alt="Gift Kalu on a G-Money note" />
       </div>
     </div>
   );

@@ -138,6 +138,8 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       if (st === 1 || st === 3) return; // playing or still buffering: autoplay worked
       wantPlay.current = false;
       setPlaying(false);
+      // Phones: music starts only from the play button, never from a stray tap.
+      if (window.matchMedia("(hover: none)").matches) return;
       const evs = ["pointerdown", "keydown"]; // a real tap or key, never a scroll
       const stop = () => evs.forEach((ev) => window.removeEventListener(ev, go));
       // First interaction starts the music, unless it was a press on a player button.

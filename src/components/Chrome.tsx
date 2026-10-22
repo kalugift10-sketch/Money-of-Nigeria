@@ -68,7 +68,7 @@ export function Header() {
         <Link href="/playlist" className={`${s.link} ${cur("/playlist")}`} aria-current={cur("/playlist") ? "page" : undefined}>Money playlist</Link>
         <Link href="/sources" className={`${s.link} ${cur("/sources")}`} aria-current={cur("/sources") ? "page" : undefined}>Sources</Link>
         <Link href="/about" className={`${s.link} ${cur("/about")}`} aria-current={cur("/about") ? "page" : undefined}>About</Link>
-        <button className={s.menu} aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}>
+        <button className={`${s.menu} ${open ? s.menuOpen : ""}`} aria-label={open ? "Close menu" : "Menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
           <span /><span />
         </button>
       </nav>
@@ -98,7 +98,7 @@ const SOURCES: [string, string][] = [
   ["PMG Notes", "https://www.pmgnotes.com/"],
 ];
 // Money in Nigerian languages and slang
-const WORDS = ["Money", "Owó", "Kuɗi", "Ego", "Naira", "Kobo", "Igho", "Okúk", "Kpali", "Mulla"];
+const WORDS = ["Money", "Owó", "Kuɗi", "Ego", "Igho", "Okụk", "Ceede", "Moni", "Kpali", "Mulla"];
 
 export function Footer() {
   const strip = entries.filter((e) => e.images.front && e.slug !== "trade-by-barter");
@@ -165,14 +165,14 @@ export function Footer() {
           </div>
         </div>
       </div>
+      <div className={`wrap ${s.credit}`}>
+        <a href={LINKEDIN} target="_blank" rel="noopener">Designed by Gift Kalu</a>
+        <span>© {new Date().getFullYear()} The Money of Nigeria</span>
+      </div>
       <div className={s.words} aria-hidden>
         <div className={s.wordsTrack}>
           {[...WORDS, ...WORDS].map((w, i) => <span key={i}>{w}<i>·</i></span>)}
         </div>
-      </div>
-      <div className={`wrap ${s.credit}`}>
-        <a href={LINKEDIN} target="_blank" rel="noopener">Designed by Gift Kalu</a>
-        <span>© {new Date().getFullYear()} The Money of Nigeria</span>
       </div>
     </footer>
   );
@@ -211,7 +211,8 @@ export function MiniPlayer() {
 
   // Desktop only: drag by holding anywhere on the player.
   const onDown = (e: React.PointerEvent) => {
-    if (window.matchMedia("(max-width: 760px)").matches) return;
+    const phone = window.matchMedia("(max-width: 760px)").matches;
+    if (phone && !(small || scrolling)) return; // phones: the bar stays put; the disc can be dragged
     if ((e.target as HTMLElement).closest("button,a")) return;
     const r = box.current!.getBoundingClientRect();
     e.preventDefault(); // stop the browser dragging the cover image
@@ -233,21 +234,23 @@ export function MiniPlayer() {
     const d = drag.current;
     drag.current = null;
     if (last.current) try { sessionStorage.setItem("mon-mini-pos", JSON.stringify(last.current)); } catch {}
-    if (d && !d.moved && small) setSmall(false);
+    if (d && !d.moved && (small || scrolling)) { setSmall(false); setScrolling(false); }
   };
 
   if (!p.started || path === "/playlist") return null;
   const style = pos ? { left: pos.x, top: pos.y, bottom: "auto" } : undefined;
+  const isPhone = typeof window !== "undefined" && window.matchMedia("(max-width: 760px)").matches;
   if (small || scrolling) {
+    const ds = pos ? { left: pos.x, top: pos.y, bottom: "auto", right: "auto" } : undefined;
     return (
-      <div data-player ref={box} className={s.miniSmall} onClick={() => { if (window.matchMedia("(max-width: 760px)").matches) { setSmall(false); setScrolling(false); } }} style={style} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp}
+      <div data-player ref={box} className={s.miniSmall} style={ds} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp}
         role="button" aria-label="Open the music player" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter") setSmall(false); }}>
         <Disc size={44} cover={p.current.cover} spinning={p.playing} />
       </div>
     );
   }
   return (
-    <div data-player ref={box} className={s.mini} style={style} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp}>
+    <div data-player ref={box} className={s.mini} style={isPhone ? undefined : style} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp}>
       <Disc size={44} cover={p.current.cover} spinning={p.playing} />
       <div className={s.miniText}>
         <strong>{p.current.title}</strong>

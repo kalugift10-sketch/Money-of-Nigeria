@@ -11,7 +11,10 @@
 .sheetLink { color: #9CA3AF; }
 .sheetOn { color: var(--ink); }
 .menu { display: none; flex-direction: column; gap: 5px; padding: 8px 4px; }
-.menu span { display: block; width: 20px; height: 1.5px; background: var(--ink); }
+.menu span { display: block; width: 20px; height: 1.5px; background: var(--ink); transition: transform 200ms var(--ease); }
+.menu { width: 44px; height: 44px; align-items: center; justify-content: center; }
+.menuOpen span:first-child { transform: translateY(3.25px) rotate(45deg); }
+.menuOpen span:last-child { transform: translateY(-3.25px) rotate(-45deg); }
 .sheet { position: fixed; inset: 0; top: 72px; background: #fff; display: flex; flex-direction: column; gap: 24px; padding: 32px var(--pad); font-size: 32px; font-weight: 500; z-index: 50; }
 
 .sound { position: relative; width: 32px; height: 32px; border-radius: 999px; display: grid; place-items: center; background: #f8fdf7; color: var(--ink); }
@@ -51,7 +54,7 @@
 .cols a:hover, .credit a:hover { color: #fff; text-decoration-color: #fff; }
 .cols a:hover { color: #fff; }
 .policy { margin-top: 14px; color: #6f8f82; max-width: 36em; line-height: 1.5; }
-.credit { display: flex; justify-content: space-between; padding-top: 24px; padding-bottom: 32px; font-size: 13px; font-weight: 300; color: var(--footer-ink); }
+.credit { display: flex; justify-content: space-between; padding-top: 24px; padding-bottom: 24px; border-top: 1px solid var(--footer-line); font-size: 13px; font-weight: 300; color: var(--footer-ink); }
 @media (max-width: 760px) {
   .tile2 { width: 72px; }
   .cols { grid-template-columns: 1fr; }
@@ -86,8 +89,9 @@
 .swipe .tiles { animation: none; }
 
 /* Big money words, edge to edge */
-.words { overflow: hidden; border-top: 1px solid var(--footer-line); border-bottom: 1px solid var(--footer-line); padding: 8px 0; }
-.wordsTrack { display: flex; width: max-content; animation: words 40s linear infinite; }
+.words { overflow: hidden; padding: 8px 0 0; line-height: 0.85; }
+.wordsTrack { display: flex; width: max-content; animation: words 32s linear infinite; }
+.words:hover .wordsTrack { animation-play-state: paused; }
 .wordsTrack span { font-size: clamp(64px, 14vw, 200px); font-weight: 500; letter-spacing: -0.04em; line-height: 1; color: #f3fdf2; white-space: nowrap; display: flex; align-items: center; }
 .wordsTrack i { font-style: normal; color: var(--brand); margin: 0 0.25em; }
 @keyframes words { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -99,8 +103,6 @@
 .sheetPlayer .miniText strong, .sheetPlayer .miniText span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sheetPlayer .miniBtn { width: 40px; height: 40px; flex: none; }
 @media (max-width: 760px) {
-  .miniSmall { left: 16px !important; top: auto !important; bottom: 16px !important; }
-  .mini { top: auto !important; bottom: 16px !important; }
   .cols { grid-template-columns: 1fr 1fr; row-gap: 32px; font-size: 15px; }
   .cols > div:first-child { grid-column: 1 / -1; }
   .cols li { margin-bottom: 14px; }

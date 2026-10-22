@@ -5,7 +5,7 @@
 .link { font-size: 18px; font-weight: 500; color: var(--brand); text-decoration: underline; text-underline-offset: 4px; }
 .visual { position: sticky; top: 140px; }
 .noteScene { perspective: 1000px; }
-.note { position: relative; aspect-ratio: 2 / 1; border-radius: 4px; overflow: hidden; transform: rotate(-3deg); transition: transform 300ms var(--ease); box-shadow: 0 12px 28px rgba(0,0,0,0.18); background: linear-gradient(90deg, #d9c6a5, #c9d5e0 50%, #9db3c8); }
+.note { position: relative; aspect-ratio: 2 / 1; border-radius: 4px; overflow: hidden; transform: rotate(-3deg); transition: transform 300ms var(--ease); box-shadow: 0 12px 28px rgba(0,0,0,0.18); }
 .note img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: 1; }
 .notePh { position: absolute; left: 7%; top: 25%; font-size: 54px; font-weight: 700; color: #2c3a4c; }
 @media (max-width: 1000px) {
