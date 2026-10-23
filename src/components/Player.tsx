@@ -52,6 +52,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   const [progress, setProgress] = useState(0);
   const indexRef = useRef(0);
   const wantPlay = useRef(false); // what the visitor asked for
+  const userChose = useRef(false); // true once the visitor has pressed play or pause themselves
   const loaded = useRef<string | null>(null); // video currently loaded
   const cancelAuto = useRef<() => void>(() => {});
   indexRef.current = index;
@@ -69,6 +70,9 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
           onStateChange: (e: { data: number }) => {
             // Keep the buttons in step with what YouTube is really doing.
             // Only mirror what YouTube is really doing; never restart it behind the visitor's back.
+            // If the visitor pressed pause while the song was still loading, YouTube starts it anyway
+            // once it has loaded. Hold the visitor's choice instead of playing by itself.
+            if (e.data === 1 && userChose.current && !wantPlay.current) { yt.current?.pauseVideo(); return; }
             if (e.data === 1) { setPlaying(true); wantPlay.current = true; }
             if (e.data === 2) { setPlaying(false); wantPlay.current = false; }
             if (window.YT && e.data === window.YT.PlayerState.ENDED) {
@@ -106,6 +110,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       const target = i ?? index;
       const song = playlist[target];
       cancelAuto.current();
+      userChose.current = true;
       wantPlay.current = true;
       setStarted(true);
       if (target !== index) { setIndex(target); setProgress(0); }
@@ -132,32 +137,23 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     loaded.current = first.youtubeId;
     wantPlay.current = true;
     setStarted(true);
-    setPlaying(true);
+    // The button only says "playing" once YouTube confirms it (state 1), never on hope.
     const check = setTimeout(() => {
+      if (userChose.current) return; // the visitor already pressed play or pause: their choice wins
       const st = (p as unknown as { getPlayerState?: () => number }).getPlayerState?.();
-      if (st === 1 || st === 3) return; // playing or still buffering: autoplay worked
+      if (st === 1) return; // autoplay worked
       wantPlay.current = false;
+      p.pauseVideo(); // stop a half-loaded song from starting later on its own
       setPlaying(false);
-      // Phones: music starts only from the play button, never from a stray tap.
-      if (window.matchMedia("(hover: none)").matches) return;
-      const evs = ["pointerdown", "keydown"]; // a real tap or key, never a scroll
-      const stop = () => evs.forEach((ev) => window.removeEventListener(ev, go));
-      // First interaction starts the music, unless it was a press on a player button.
-      function go(ev: Event) {
-        stop();
-        if ((ev.target as HTMLElement | null)?.closest?.("[data-player]")) return;
-        wantPlay.current = true;
-        yt.current?.playVideo();
-        setPlaying(true);
-      }
-      cancelAuto.current = stop;
-      evs.forEach((ev) => window.addEventListener(ev, go, { passive: true }));
+      // If the browser blocks sound on arrival, the music waits for the play button.
+      // It is never started by a click or tap somewhere else on the page.
     }, 2500);
     return () => clearTimeout(check);
   }, [ready]);
 
   const pause = useCallback(() => {
     cancelAuto.current();
+    userChose.current = true;
     wantPlay.current = false;
     yt.current?.pauseVideo();
     setPlaying(false);

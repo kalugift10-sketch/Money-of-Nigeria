@@ -15,6 +15,6 @@
   .plate { aspect-ratio: 1; border-radius: 6px; }
   .name { font-size: 16px; line-height: 1.2; }
 }
-.word { font-family: var(--mono); font-weight: 400; font-size: 28px; letter-spacing: .08em; text-transform: uppercase; color: #e2e2e2; transform: rotate(-9.84deg); }
+.word { font-family: var(--mono); font-weight: 500; font-size: 30px; letter-spacing: .08em; text-transform: uppercase; color: #6b7280; border: 2px solid #9ca3af; border-radius: 8px; padding: 0.1em 0.35em; transform: rotate(-9.84deg); }
 
 .peek .turns { transform: rotateY(180deg); }
