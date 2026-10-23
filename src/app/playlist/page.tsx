@@ -31,7 +31,7 @@ export default function Playlist() {
           </button>
           <button data-player onClick={p.toggle} aria-label={p.playing ? "Pause" : "Play"} className={s.main}>
             {p.playing ? <svg width="18" height="18" viewBox="0 0 16 16"><rect x="3" y="2" width="3.5" height="12" /><rect x="9.5" y="2" width="3.5" height="12" /></svg>
-              : <svg width="18" height="18" viewBox="0 0 16 16"><path d="M4 2l10 6-10 6z" /></svg>}
+              : <svg width="18" height="18" viewBox="0 0 16 16"><path d="M4 2.8v10.4a1 1 0 0 0 1.5.86l8.3-5.2a1 1 0 0 0 0-1.72L5.5 1.94A1 1 0 0 0 4 2.8z" /></svg>}
           </button>
           <button onClick={p.next} aria-label="Next" className={s.side}>
             <svg width="16" height="16" viewBox="0 0 16 16"><path d="M11 2h2v12h-2zM2 2v12l8-6z" /></svg>
@@ -59,7 +59,7 @@ export default function Playlist() {
                   </span>
                   <span className={s.hoverIcon} aria-hidden>
                     {on && p.playing ? <svg width="14" height="14" viewBox="0 0 16 16"><rect x="3" y="2" width="3.5" height="12" /><rect x="9.5" y="2" width="3.5" height="12" /></svg>
-                      : <svg width="14" height="14" viewBox="0 0 16 16"><path d="M4 2l10 6-10 6z" /></svg>}
+                      : <svg width="14" height="14" viewBox="0 0 16 16"><path d="M4 2.8v10.4a1 1 0 0 0 1.5.86l8.3-5.2a1 1 0 0 0 0-1.72L5.5 1.94A1 1 0 0 0 4 2.8z" /></svg>}
                   </span>
                   <span className={s.text}><strong>{song.title}</strong><span>{song.artist}</span></span>
                 </button>

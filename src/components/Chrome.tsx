@@ -48,7 +48,7 @@ function SheetPlayer() {
       <button className={s.miniBtn} onClick={p.toggle} aria-label={p.playing ? "Pause" : "Play"}>
         {p.playing
           ? <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden><rect x="3" y="2" width="3.5" height="12" rx="1.2" fill="currentColor" /><rect x="9.5" y="2" width="3.5" height="12" rx="1.2" fill="currentColor" /></svg>
-          : <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden><path d="M5 2.8v10.4a1 1 0 0 0 1.5.86l8.3-5.2a1 1 0 0 0 0-1.72L6.5 1.94A1 1 0 0 0 5 2.8z" fill="currentColor" /></svg>}
+          : <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden><path d="M4 2.8v10.4a1 1 0 0 0 1.5.86l8.3-5.2a1 1 0 0 0 0-1.72L5.5 1.94A1 1 0 0 0 4 2.8z" fill="currentColor" /></svg>}
       </button>
       <button className={s.miniBtn} onClick={p.next} aria-label="Next song"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden><path d="M4 3v10l7-5z" fill="currentColor"/><rect x="11" y="3" width="2" height="10" rx="1" fill="currentColor"/></svg></button>
     </div>
@@ -259,7 +259,7 @@ export function MiniPlayer() {
       <button className={s.miniBtn} onClick={p.toggle} aria-label={p.playing ? "Pause" : "Play"}>
         {p.playing
           ? <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden><rect x="3" y="2" width="3.5" height="12" rx="1.2" fill="currentColor" /><rect x="9.5" y="2" width="3.5" height="12" rx="1.2" fill="currentColor" /></svg>
-          : <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden><path d="M5 2.8v10.4a1 1 0 0 0 1.5.86l8.3-5.2a1 1 0 0 0 0-1.72L6.5 1.94A1 1 0 0 0 5 2.8z" fill="currentColor" /></svg>}
+          : <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden><path d="M4 2.8v10.4a1 1 0 0 0 1.5.86l8.3-5.2a1 1 0 0 0 0-1.72L5.5 1.94A1 1 0 0 0 4 2.8z" fill="currentColor" /></svg>}
       </button>
       <button className={s.miniMin} onClick={() => setSmall(true)} aria-label="Minimise the music player">
         <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden><path d="M3 7h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>

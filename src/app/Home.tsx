@@ -11,14 +11,32 @@ const PAGE = 10; // mobile "Show more" step
 
 export function Home() {
   // Hero: objects that have a photo, cycling on their own.
-  const heroItems = useMemo(() => entries.filter((e) => e.images.front), []);
+  // Mixed order: one from each era in turn, so neighbours never come from the same period.
+  const heroItems = useMemo(() => {
+    const groups: Record<string, typeof entries> = {};
+    for (const e of entries.filter((x) => x.images.front)) (groups[e.era] ??= []).push(e);
+    const lists = Object.values(groups).map((g) => g.filter((_, i) => i % 2 === 0).concat(g.filter((_, i) => i % 2 === 1)));
+    const out: typeof entries = [];
+    for (let r = 0; lists.some((l) => l.length > r); r++) for (const l of lists) if (l[r]) out.push(l[r]);
+    return out;
+  }, []);
   const [hi, setHi] = useState(0);
   const [paused, setPaused] = useState(false);
   useEffect(() => {
     if (paused || heroItems.length < 2) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const t = setInterval(() => setHi((i) => (i + 1) % heroItems.length), 4500);
-    return () => clearInterval(t);
+    // Only move to the next coin once its picture has fully loaded, so the stage is never blank.
+    let alive = true;
+    const t = setInterval(() => {
+      setHi((i) => {
+        const n = (i + 1) % heroItems.length;
+        const img = new Image();
+        img.onload = () => { if (alive) setHi(n); };
+        img.src = heroItems[n].images.front!;
+        return i;
+      });
+    }, 4500);
+    return () => { alive = false; clearInterval(t); };
   }, [paused, heroItems.length]);
   const hero = heroItems[hi];
 

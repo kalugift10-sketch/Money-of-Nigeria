@@ -6,7 +6,7 @@
 .stage { position: relative; height: 480px; border-radius: 8px; overflow: hidden; display: grid; place-items: center; transition: background 600ms var(--ease); }
 .caption { position: absolute; left: 24px; top: 24px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: #6b5a4a; }
 .heroObj { position: relative; width: 64%; aspect-ratio: 360 / 264; object-fit: contain; filter: drop-shadow(0 10px 16px rgba(0,0,0,.14)); animation: rise 700ms var(--ease); }
-.year { position: absolute; left: 24px; bottom: 8px; font-family: var(--mono); font-weight: 300; font-size: 120px; letter-spacing: -0.04em; color: #b87333; opacity: 0.35; line-height: 1; white-space: nowrap; }
+.year { position: absolute; left: 24px; bottom: 8px; font-family: var(--mono); font-weight: 300; font-size: 120px; letter-spacing: -0.04em; color: #b87333; opacity: 0.35; line-height: 1; white-space: nowrap; z-index: 2; pointer-events: none; }
 .yearLong { font-size: 56px; }
 .dashes { display: flex; gap: 6px; }
 .dashes span { height: 3px; width: 12px; border-radius: 2px; background: var(--line); transition: width 400ms var(--ease), background 400ms; }
