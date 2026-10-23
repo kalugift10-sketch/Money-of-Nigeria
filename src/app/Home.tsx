@@ -85,7 +85,8 @@ export function Home() {
         )}
       </section>
 
-      <section id="all" className={`wrap ${s.catalog}`}>
+      <section id="all" className={`wrap ${s.catalog}`} aria-labelledby="all-h">
+        <h2 id="all-h" className="sr-only">All the money</h2>
         <div className={s.filters}>
           <label className={s.search}>
             <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" /><path d="M11 11l3 3" stroke="currentColor" /></svg>

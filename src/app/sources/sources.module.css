@@ -37,3 +37,4 @@
 .rail { transition: width .25s var(--ease), opacity .2s; }
 .rail { overflow-y: auto; scrollbar-width: none; }
 .rail::-webkit-scrollbar { display: none; }
+.group ol a { display: inline-block; padding: 6px 0; }

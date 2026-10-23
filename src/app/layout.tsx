@@ -8,6 +8,9 @@ import { Loading } from "@/components/Loading";
 export const metadata: Metadata = {
   title: "The Money Of Nigeria",
   description: "Every medium of exchange spent in Nigeria, from pre-colonial trade to the eNaira.",
+  metadataBase: new URL("https://moneyofnigeria.vercel.app"),
+  openGraph: { title: "The Money Of Nigeria", description: "Every medium of exchange spent in Nigeria, from pre-colonial trade to the eNaira.", images: [{ url: "/og.png", width: 1200, height: 630, alt: "The Money Of Nigeria: a 500 naira note and a 1991 coin" }], type: "website" },
+  twitter: { card: "summary_large_image", images: ["/og.png"] },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
